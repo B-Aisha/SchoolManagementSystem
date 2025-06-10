@@ -9,6 +9,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
+import UsersList from './pages/admin/UsersList';
+import UserForm from './pages/admin/UserForm';
 
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
       <Route path="/parent-dashboard" element={<ParentDashboard />} />
+      <Route path="/admin/users" element={<UsersList />} />
+      <Route path="/admin/create-user" element={<UserForm />} />
     </Routes>
   );
 };
