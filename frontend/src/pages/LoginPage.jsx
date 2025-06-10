@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +21,8 @@ const Login = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,6 +32,17 @@ const Login = () => {
       const response = await axios.post('https://localhost:7260/api/Users/login', formData);
       const token = response.data.token;
       localStorage.setItem('token', token);//store token since we're using JWT
+      
+      const decoded = jwtDecode(token);
+      const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+      // Navigate based on role
+    if (role === 'Admin') navigate('/admin-dashboard');
+    else if (role === 'Teacher') navigate('/teacher-dashboard');
+    else if (role === 'Student') navigate('/student-dashboard');
+    else if (role === 'Parent') navigate('/parent-dashboard');
+    else navigate('/');
+
       setSuccess('Login successful!');
       // Redirect or navigate to dashboard here
     } catch (err) {
