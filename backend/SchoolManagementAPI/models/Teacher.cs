@@ -1,19 +1,25 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace SchoolManagementAPI.models
 {
     public class Teacher
-{
-    public int TeacherId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int Email { get; set; }
+    {
+        [Key]
+        public string? TeacherId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Email { get; set; }
 
-    // Relationships
-    public string? StudentId { get; set; }
-    public ApplicationUser? Student { get; set; }
+        [Required]
+        public string? ApplicationUserId { get; set; }
 
-    public ICollection<Enrollment>? Enrollments { get; set; }
-    public ICollection<Grade>? Grades { get; set; }
-    public ICollection<Attendance>? Attendances { get; set; }
+        //[ForeignKey("UserId")]
+        public ApplicationUser? ApplicationUser { get; set; }
+
+        public ICollection<Enrollment>? Enrollments { get; set; }
+        public ICollection<Grade>? Grades { get; set; }
+        public ICollection<Attendance>? Attendances { get; set; } = new List<Attendance>();
+        public ICollection<Course>? Courses { get; set; } = new List<Course>();
 }
 }
 

@@ -1,19 +1,27 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace SchoolManagementAPI.models
 {
-    
-public class Parent
-{
-    public int ParentId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int Email { get; set; }
 
-    // Relationships
-    public string? StudentId { get; set; }
-    public ApplicationUser? Student { get; set; }
+    public class Parent
+    {
+        [Key]
+        public string? ParentId { get; set; }
+        
+        public int Email { get; set; }
 
-    public ICollection<Enrollment>? Enrollments { get; set; }
-    public ICollection<Grade>? Grades { get; set; }
-    public ICollection<Attendance>? Attendances { get; set; }
-}
+
+        //[Required]
+        public string? ApplicationUserId { get; set; }
+
+        //[ForeignKey("UserId")]
+        public ApplicationUser? ApplicationUser { get; set; }
+
+
+        // Relationships
+        public ICollection<Student> Children { get; set; } = new List<Student>();
+    }
 }

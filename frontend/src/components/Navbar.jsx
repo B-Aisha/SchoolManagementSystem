@@ -1,14 +1,27 @@
 // src/components/Navbar.jsx
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar() {
+
+const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    alert("Redirecting to login...");
+    navigate('/login'); // enable later when login page exists
+  };
+
   return (
-    <nav style={{ padding: '10px', background: '#333', color: '#fff' }}>
-      <Link to="/" style={{ marginRight: '15px', color: 'white' }}>Dashboard</Link>
-      <Link to="/students" style={{ marginRight: '15px', color: 'white' }}>Students</Link>
-      <Link to="/teachers" style={{ color: 'white' }}>Teachers</Link>
+    <nav className="navbar">
+      <h1>School Management System</h1>
+      <div className="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <button className="button" onClick={handleLogin}>Login</button>
+      </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

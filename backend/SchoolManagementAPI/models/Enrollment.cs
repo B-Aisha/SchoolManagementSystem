@@ -1,17 +1,22 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace SchoolManagementAPI.models
 {
     public class Enrollment
-{
-    public int EnrollmentId { get; set; }
+    {
+        [Key]
+        public string? EnrollmentId { get; set; }
 
-    public string StudentId { get; set; }
-    public ApplicationUser? Student { get; set; }
+        public string? StudentId { get; set; }
+        public Student? Student { get; set; }
 
-    public int CourseId { get; set; }
-    public Course? Course { get; set; }
+        public string? CourseId { get; set; }
+        public Course? Course { get; set; }
 
-    public DateTime EnrolledOn { get; set; }
-}
+        public DateTime EnrolledOn { get; set; }
+    
+        public ICollection<Grade>? Grades { get; set; } = new List<Grade>();
+    }
 }
 

@@ -1,9 +1,24 @@
 // src/App.jsx
-import AppRoutes from './routes/AppRoutes';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/Homepage';
+import LoginPage from "./pages/LoginPage"; 
+import SignUpPage from "./pages/SignupPage"
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
-function App() {
-  return <AppRoutes />;
-}
+
+
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} /> 
+      <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+    </Routes>
+  );
+};
 
 export default App;
 
