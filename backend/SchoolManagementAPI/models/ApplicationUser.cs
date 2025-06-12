@@ -8,7 +8,7 @@ namespace SchoolManagementAPI.models
          public string? FirstName { get; set; }
 
           public string? LastName{ get; set; }
-        public string? Role { get; set; }
+        public string? Role { get; set; }// Use carefully; we'll handle this with claims or role manager too
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
