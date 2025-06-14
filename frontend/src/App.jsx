@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/Homepage';
+import About from './pages/About';
 import LoginPage from "./pages/LoginPage"; 
 import SignUpPage from "./pages/SignupPage"
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -11,21 +12,26 @@ import StudentDashboard from './pages/student/StudentDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
 import UsersList from './pages/admin/UsersList';
 import UserForm from './pages/admin/UserForm';
-
+import AdminHome from './pages/admin/AdminHome';
+import ProtectedRoute from './components/ProtectedRoute'; // adjust path based on where you place it
+import DebugToken from './pages/DebugToken';
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<About />} />
       <Route path="/login" element={<LoginPage />} /> 
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/admin" element={<ProtectedRoute allowedRole="Admin"><AdminHome /></ProtectedRoute>}></Route>
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
       <Route path="/parent-dashboard" element={<ParentDashboard />} />
       <Route path="/admin/users" element={<UsersList />} />
       <Route path="/admin/create-user" element={<UserForm />} />
+      <Route path="/debug-token" element={<DebugToken />} />
     </Routes>
   );
 };

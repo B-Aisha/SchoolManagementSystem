@@ -7,8 +7,10 @@ import '../../index.css'; // Added CSS import
 
 const UserForm = () => {
   const [formData, setFormData] = useState({
-    userName: '',
-    email: '',
+    UserName: '',
+    FirstName: '',
+    LastName: '',
+    Email: '',
     role: '',
     password: ''
   });
@@ -36,8 +38,10 @@ const UserForm = () => {
           <h2>Add New User</h2>
           <form className="auth-form" onSubmit={handleSubmit}>
             <input type="text" name="userName" placeholder="Username" onChange={handleChange} required />
+            <input type="text" name="firstName" placeholder="Firstname" onChange={handleChange} required />
+            <input type="text" name="lastName" placeholder="Lastname" onChange={handleChange} required />
             <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-            <input type="text" name="role" placeholder="Role (e.g. Student, Teacher, Parent)" onChange={handleChange} required />
+            <input type="text" name="role" placeholder="Role (e.g. Student, Teacher, Parent, Admin)" onChange={handleChange} required />
             <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
             <button className="button" type="submit">Create User</button>
           </form>

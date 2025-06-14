@@ -10,7 +10,12 @@ const UsersList = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('https://localhost:7260/api/users');
+      const res = await axios.get('https://localhost:7260/api/admin/all-users', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+  }
+});
+
       setUsers(res.data);
     } catch (err) {
       console.error('Error fetching users', err);
@@ -20,7 +25,12 @@ const UsersList = () => {
   const deleteUser = async (id) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`https://localhost:7260/api/users/${id}`);
+      await axios.delete(`https://localhost:7260/api/admin/delete-user/${id}`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+  }
+});
+
       fetchUsers();
     } catch (err) {
       console.error('Failed to delete user', err);

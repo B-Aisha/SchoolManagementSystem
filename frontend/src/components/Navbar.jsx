@@ -15,8 +15,8 @@ const Navbar = () => {
     <nav className="navbar">
       <h1>School Management System</h1>
       <div className="nav-links">
-        <a href="#">Home</a>
-        <a href="#">About</a>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
         <a href="#">Contact</a>
         <button className="button" onClick={handleLogin}>Login</button>
       </div>
