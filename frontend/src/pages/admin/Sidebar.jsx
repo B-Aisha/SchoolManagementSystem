@@ -11,6 +11,8 @@ const Sidebar = () => {
         <li><Link to="/admin-dashboard">Dashboard</Link></li>
         <li><Link to="/admin/create-user">Add New User</Link></li>
         <li><Link to="/admin/all-users">List all Users</Link></li>
+        <li><Link to="/admin/student-list">Student List</Link></li>
+        <li><Link to="/admin/teacher-list">Teacher List</Link></li>
       </ul>
     </div>
   );

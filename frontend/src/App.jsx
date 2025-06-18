@@ -11,6 +11,8 @@ import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
 import AdminHome from './pages/admin/AdminHome';
+import StudentList from './pages/admin/StudentList';
+import TeacherList from './pages/admin/TeacherList';
 //import ProtectedRoute from './components/ProtectedRoute'; // adjust path based on where you place it
 import DebugToken from './pages/DebugToken';
 import CreateUser from './pages/admin/CreateUser';
@@ -31,6 +33,8 @@ const App = () => {
       <Route path="/parent-dashboard" element={<ParentDashboard />} />
       <Route path="/admin/create-user" element={<CreateUser />} />
       <Route path="/admin/all-users" element={<UsersList />} />
+      <Route path="/admin/student-list" element={<StudentList />} />
+      <Route path="/admin/teacher-list" element={<TeacherList />} />
       <Route path="/debug-token" element={<DebugToken />} />
     </Routes>
   );
