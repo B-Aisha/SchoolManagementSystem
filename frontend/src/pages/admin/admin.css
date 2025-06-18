@@ -26,3 +26,37 @@
   margin-top: 1rem;
   font-size: 1.2rem;
 }
+
+.table-container {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.table-heading {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+}
+
+.custom-table thead tr {
+  background-color: #f0f0f0;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.custom-table th {
+  font-weight: bold;
+}

@@ -40,6 +40,7 @@ const TeacherList = () => {
               <th style={thStyle}>Email</th>
               <th style={thStyle}>Phone</th>
               <th style={thStyle}>Click to Edit</th>
+               <th style={thStyle}>delete</th>
 
             </tr>
           </thead>
@@ -62,12 +63,42 @@ const TeacherList = () => {
                         display: 'inline-block'
                         }}>Edit</Link>
                  </td>
+                 <td style={tdStyle}>
+                    <Link 
+                    to={`/admin/delete-teacher/${teacher.id}`} 
+                        style={{
+                        backgroundColor: '#dc3545',
+                        color: 'white',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        textDecoration: 'none',
+                        display: 'inline-block'
+                        }}>Delete</Link>
+                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+
+<div style={{ marginTop: '20px', textAlign: 'center' }}>
+  <Link
+    to="/admin-dashboard"
+    style={{
+      color: '#007bff',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+      border: '1px solid #007bff',
+      padding: '8px 16px',
+      borderRadius: '4px'
+    }}
+  >
+    ← Back to Dashboard
+  </Link>
+</div>
+
+</div>
+</div>
+
   );
 };
 

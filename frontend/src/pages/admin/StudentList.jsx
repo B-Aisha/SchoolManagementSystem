@@ -39,7 +39,8 @@ const StudentList = () => {
               <th style={thStyle}>Username</th>
               <th style={thStyle}>Email</th>
               <th style={thStyle}>Phone</th>
-               <th style={thStyle}>Click to Edit</th>
+              <th style={thStyle}>Click to Edit</th>
+              <th style={thStyle}>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -61,12 +62,43 @@ const StudentList = () => {
                       display: 'inline-block'
                     }}>Edit</Link>
                 </td>
+                <td style={tdStyle}>
+                  <Link 
+                    to={`/admin/delete-student/${student.id}`} 
+                    style={{
+                      backgroundColor: '#dc3545',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '4px',
+                      textDecoration: 'none',
+                      display: 'inline-block'
+                    }}>Delete</Link>
+                </td>
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
-    </div>
+       </table>
+
+<div style={{ marginTop: '20px', textAlign: 'center' }}>
+  <Link
+    to="/admin-dashboard"
+    style={{
+      color: '#007bff',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+      border: '1px solid #007bff',
+      padding: '8px 16px',
+      borderRadius: '4px'
+    }}
+  >
+    ← Back to Dashboard
+  </Link>
+</div>
+
+</div>
+</div>
+
+    
   );
 };
 

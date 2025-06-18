@@ -10,7 +10,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
-import AdminHome from './pages/admin/AdminHome';
+//import AdminHome from './pages/admin/AdminHome';
 import StudentList from './pages/admin/StudentList';
 import TeacherList from './pages/admin/TeacherList';
 //import ProtectedRoute from './components/ProtectedRoute'; // adjust path based on where you place it
@@ -19,6 +19,8 @@ import CreateUser from './pages/admin/CreateUser';
 import UsersList from './pages/admin/UsersList';
 import EditStudent from './pages/admin/EditStudent';
 import EditTeacher from './pages/admin/EditTeacher';
+import DeleteStudent from './pages/admin/DeleteStudent';
+import DeleteTeacher from './pages/admin/DeleteTeacher';
 
 const App = () => {
   return (
@@ -28,7 +30,6 @@ const App = () => {
       <Route path="/login" element={<LoginPage />} /> 
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/admin" element={<AdminHome />}/>
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
@@ -37,8 +38,10 @@ const App = () => {
       <Route path="/admin/all-users" element={<UsersList />} />
       <Route path="/admin/student-list" element={<StudentList />} />
       <Route path="/admin/edit-student/:id" element={<EditStudent />} />
+      <Route path="/admin/delete-student/:id" element={<DeleteStudent />} />
       <Route path="/admin/teacher-list" element={<TeacherList />} />
       <Route path="/admin/edit-teacher/:id" element={<EditTeacher />} />
+      <Route path="/admin/delete-teacher/:id" element={<DeleteTeacher />} />
       <Route path="/debug-token" element={<DebugToken />} />
     </Routes>
   );

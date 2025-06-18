@@ -141,7 +141,21 @@ public class AdminController : ControllerBase
         return NoContent();
     }//end of update controller
 
-    
+    [HttpDelete("user/{id}")]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return NotFound();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+            return Ok(new { message = "User deleted successfully" });
+
+        return BadRequest(result.Errors);
+    }//end of the delete user controller
+
 
 
 
