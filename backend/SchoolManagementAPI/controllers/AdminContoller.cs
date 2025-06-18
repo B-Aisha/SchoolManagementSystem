@@ -81,15 +81,31 @@ public class AdminController : ControllerBase
             });
         }
         return Ok(userList);
+    }//end of get all users controller
 
+    [HttpGet("users-in-role/{roleName}")]
+    //[Authorize(Roles = "Admin")] // Only Admin can fetch role-based users
+    public async Task<IActionResult> GetUsersInRole(string roleName)
+    {
+        var usersInRole = await _userManager.GetUsersInRoleAsync(roleName);
 
+        var userList = new List<UserWithRoleDto>();
 
+        foreach (var user in usersInRole)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userList.Add(new UserWithRoleDto
+                {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Roles = roles.ToList()
+                });
+            }
+
+        return Ok(userList);
     }
-
-
-
-
-
 
 }//end
 
