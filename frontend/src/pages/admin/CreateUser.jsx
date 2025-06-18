@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 import AdminNavbar from './AdminNavbar';
 import '../../index.css'; // Added CSS import
 
-const UserForm = () => {
+const CreateUser = () => {
   const [formData, setFormData] = useState({
     UserName: '',
     FirstName: '',
@@ -51,4 +51,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default CreateUser;

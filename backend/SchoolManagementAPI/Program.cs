@@ -30,17 +30,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("AllowLocalhost", policy =>
     {
         policy.WithOrigins("http://localhost:5173") // Vite dev server
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddAuthorization();
 
 
 // Add services to the container.
@@ -74,10 +74,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowLocalhost");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors("AllowFrontend");
+
 
 app.Run();

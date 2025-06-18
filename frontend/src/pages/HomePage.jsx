@@ -23,7 +23,10 @@ const HomePage = () => {
           <h3>About Us</h3>
           <p>
             We are dedicated to streamlining school operations for administrators,
-            teachers, parents, and students. Our portal provides easy access to attendance,
+            teachers, parents, and students. 
+          </p>
+          <p>
+            Our portal provides easy access to attendance,
             grades, course management, and more.
           </p>
           <Link to="/about" className="button">Learn More →</Link>

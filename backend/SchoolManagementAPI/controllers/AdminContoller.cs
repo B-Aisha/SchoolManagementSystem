@@ -5,19 +5,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using SchoolManagementAPI.Dto;
 using SchoolManagementAPI.data;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class AdminController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ApplicationDbContext _context;
 
-    public AdminController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    private readonly IConfiguration _configuration;
+
+    public AdminController(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+         IConfiguration configuration,
+        ApplicationDbContext context
+        )
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _configuration = configuration;
+        _context = context;
     }
 
     // ✅ CREATE USER
@@ -45,50 +57,39 @@ public class AdminController : ControllerBase
         await _userManager.AddToRoleAsync(user, model.Role);
 
         return Ok("User created successfully");
-    }
+    }//for create user
 
-    // ✅ GET ALL USERS
     [HttpGet("all-users")]
-    public IActionResult GetAllUsers()
+    //[Authorize(Roles = "Admin")] // Optional, depending on your role-based setup
+    public async Task<IActionResult> GetAllUsers()
     {
-       var users = _userManager.Users.Select(u => new
-    {
-        u.Id,
-        u.UserName,
-        u.Email,
-        u.FirstName,
-        u.LastName,
-        u.PhoneNumber,
-        u.Role,
-        u.CreatedAt
-    }).ToList();
+        var users = _userManager.Users.ToList();
 
-    return Ok(users); 
+        var userList = new List<UserWithRoleDto>();
+
+        foreach (var user in users)
+
+        {
+            var Roles = await _userManager.GetRolesAsync(user);
+            userList.Add(new UserWithRoleDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Roles = Roles.ToList()
+            });
+        }
+        return Ok(userList);
+
+
+
     }
 
-    // ✅ DELETE USER
-    [HttpDelete("delete-user/{id}")]
-    public async Task<IActionResult> DeleteUser(string id)
-    {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user == null) return NotFound();
 
-        var result = await _userManager.DeleteAsync(user);
-        return result.Succeeded ? Ok($"User {user.UserName} deleted") : BadRequest("Failed to delete user.");
-    }
 
-    // ✅ UPDATE USER (basic example)
-    [HttpPut("update-user/{id}")]
-    public async Task<IActionResult> UpdateUser(string id, UpdateUserDto model)
-    {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user == null) return NotFound();
 
-        user.FirstName = model.FirstName;
-        user.LastName = model.LastName;
-        user.Email = model.Email;
 
-        var result = await _userManager.UpdateAsync(user);
-        return result.Succeeded ? Ok("Updated") : BadRequest("Error updating");
-    }
-}
+
+}//end
+

@@ -10,11 +10,11 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
-import UsersList from './pages/admin/UsersList';
-import UserForm from './pages/admin/UserForm';
 import AdminHome from './pages/admin/AdminHome';
-import ProtectedRoute from './components/ProtectedRoute'; // adjust path based on where you place it
+//import ProtectedRoute from './components/ProtectedRoute'; // adjust path based on where you place it
 import DebugToken from './pages/DebugToken';
+import CreateUser from './pages/admin/CreateUser';
+import UsersList from './pages/admin/UsersList';
 
 const App = () => {
   return (
@@ -24,13 +24,13 @@ const App = () => {
       <Route path="/login" element={<LoginPage />} /> 
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/admin" element={<ProtectedRoute allowedRole="Admin"><AdminHome /></ProtectedRoute>}></Route>
+      <Route path="/admin" element={<AdminHome />}/>
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
       <Route path="/parent-dashboard" element={<ParentDashboard />} />
-      <Route path="/admin/users" element={<UsersList />} />
-      <Route path="/admin/create-user" element={<UserForm />} />
+      <Route path="/admin/create-user" element={<CreateUser />} />
+      <Route path="/admin/all-users" element={<UsersList />} />
       <Route path="/debug-token" element={<DebugToken />} />
     </Routes>
   );

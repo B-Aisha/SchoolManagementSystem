@@ -11,7 +11,7 @@ namespace SchoolManagementAPI.models
         public string? Email { get; set; }
 
         [Required]
-        public string? ApplicationUserId { get; set; }
+        public string? ApplicationUserId { get; set; } 
 
         //[ForeignKey("UserId")]
         public ApplicationUser? ApplicationUser { get; set; }
