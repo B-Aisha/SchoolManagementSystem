@@ -92,20 +92,58 @@ public class AdminController : ControllerBase
         var userList = new List<UserWithRoleDto>();
 
         foreach (var user in usersInRole)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            userList.Add(new UserWithRoleDto
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                userList.Add(new UserWithRoleDto
-                {
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList()
-                });
-            }
+            });
+        }
 
         return Ok(userList);
-    }
+    }//end of users in role controller
+
+    [HttpGet("user/{id}")]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetUserById(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        return Ok(new
+        {
+            user.Id,
+            user.UserName,
+            user.Email,
+            user.PhoneNumber
+        });
+    }//end of get user by id controller 
+    
+    [HttpPut("user/{id}")]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDto dto)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        user.UserName = dto.UserName;
+        user.Email = dto.Email;
+        user.PhoneNumber = dto.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return NoContent();
+    }//end of update controller
+
+    
+
+
 
 }//end
 

@@ -17,6 +17,8 @@ import TeacherList from './pages/admin/TeacherList';
 import DebugToken from './pages/DebugToken';
 import CreateUser from './pages/admin/CreateUser';
 import UsersList from './pages/admin/UsersList';
+import EditStudent from './pages/admin/EditStudent';
+import EditTeacher from './pages/admin/EditTeacher';
 
 const App = () => {
   return (
@@ -34,7 +36,9 @@ const App = () => {
       <Route path="/admin/create-user" element={<CreateUser />} />
       <Route path="/admin/all-users" element={<UsersList />} />
       <Route path="/admin/student-list" element={<StudentList />} />
+      <Route path="/admin/edit-student/:id" element={<EditStudent />} />
       <Route path="/admin/teacher-list" element={<TeacherList />} />
+      <Route path="/admin/edit-teacher/:id" element={<EditTeacher />} />
       <Route path="/debug-token" element={<DebugToken />} />
     </Routes>
   );

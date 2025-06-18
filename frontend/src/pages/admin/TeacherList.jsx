@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; 
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -38,6 +39,8 @@ const TeacherList = () => {
               <th style={thStyle}>Username</th>
               <th style={thStyle}>Email</th>
               <th style={thStyle}>Phone</th>
+              <th style={thStyle}>Click to Edit</th>
+
             </tr>
           </thead>
           <tbody>
@@ -47,6 +50,18 @@ const TeacherList = () => {
                 <td style={tdStyle}>{teacher.userName}</td>
                 <td style={tdStyle}>{teacher.email}</td>
                 <td style={tdStyle}>{teacher.phoneNumber}</td>
+                <td style={tdStyle}>
+                    <Link 
+                    to={`/admin/edit-teacher/${teacher.id}`} 
+                        style={{
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        textDecoration: 'none',
+                        display: 'inline-block'
+                        }}>Edit</Link>
+                 </td>
               </tr>
             ))}
           </tbody>
