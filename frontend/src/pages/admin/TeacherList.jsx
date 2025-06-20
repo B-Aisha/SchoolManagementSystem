@@ -32,6 +32,21 @@ const TeacherList = () => {
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', textAlign: 'center', marginBottom: '20px' }}>
           All Teachers
         </h2>
+
+        <div style={{ marginBottom: '20px', textAlign: 'right' }}>
+        <Link
+        to="/admin/add-teacher"
+        style={{
+        backgroundColor: '#28a745',
+        color: 'white',
+        padding: '8px 16px',
+        borderRadius: '4px',
+        textDecoration: 'none',
+        fontWeight: 'bold'
+        }}>+ Add Teacher
+        </Link>
+        </div>
+
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: '600px' }}>
           <thead>
             <tr style={{ backgroundColor: '#f0f0f0' }}>

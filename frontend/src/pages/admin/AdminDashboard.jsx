@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import AdminNavbar from './AdminNavbar';
 import '../../index.css';
 import './admin.css';
-import { FaUsers, FaUserPlus, FaChartBar, FaCog } from 'react-icons/fa';
+import { FaUsers,  FaChalkboardTeacher, FaUserGraduate} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 
@@ -19,25 +19,20 @@ const AdminDashboard = () => {
           <p>Select an action below:</p>
 
           <div className="admin-cards-grid">
-            <Link to="/admin/users" className="admin-card">
+            <Link to="/admin/all-users" className="admin-card">
               <FaUsers size={40} />
               <h3>Manage Users</h3>
             </Link>
 
-            <Link to="/admin/create-user" className="admin-card">
-              <FaUserPlus size={40} />
-              <h3>Add New User</h3>
+            <Link to="/admin/teacher-list" className="admin-card">
+              <FaChalkboardTeacher size={40} />
+              <h3>Teacher</h3>
+            </Link>
+            <Link to="/admin/student-list" className="admin-card">
+              <FaUserGraduate size={40} />
+              <h3>Students</h3>
             </Link>
 
-            <Link to="/admin/reports" className="admin-card">
-              <FaChartBar size={40} />
-              <h3>Reports</h3>
-            </Link>
-
-            <Link to="/admin/settings" className="admin-card">
-              <FaCog size={40} />
-              <h3>Settings</h3>
-            </Link>
           </div>
         </div>
       </div>

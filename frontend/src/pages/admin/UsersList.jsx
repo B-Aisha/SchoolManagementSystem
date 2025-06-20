@@ -17,6 +17,21 @@ const UsersList = () => {
     <div className="table-container">
   <div>
     <h2 className="table-heading">All Users</h2>
+
+      <div style={{ marginBottom: '20px', textAlign: 'right' }}>
+      <Link
+      to="/admin/create-user"
+      style={{
+      backgroundColor: '#28a745',
+      color: 'white',
+      padding: '8px 16px',
+      borderRadius: '4px',
+      textDecoration: 'none',
+      fontWeight: 'bold'
+    }}>+ Add User
+  </Link>
+</div>
+
     <table className="custom-table">
       <thead>
         <tr>
@@ -24,6 +39,7 @@ const UsersList = () => {
           <th>Email</th>
           <th>Phone Number</th>
           <th>Roles</th>
+          <th>Assign Role</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +49,19 @@ const UsersList = () => {
             <td>{user.email}</td>
             <td>{user.phoneNumber}</td>
             <td>{user.roles.join(', ')}</td>
+            <td>
+              <Link
+              to={`/admin/assign-role/${user.id}`}
+              style={{
+                backgroundColor: '#ffc107',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                textDecoration: 'none',
+                fontWeight: 'bold'
+              }} >Assign Role
+              </Link>
+            </td>
           </tr>
         ))}
       </tbody>

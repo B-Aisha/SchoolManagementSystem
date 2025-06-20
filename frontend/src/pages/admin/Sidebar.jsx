@@ -9,8 +9,8 @@ const Sidebar = () => {
       <h3>Admin Panel</h3>
       <ul>
         <li><Link to="/admin-dashboard">Dashboard</Link></li>
-        <li><Link to="/admin/create-user">Add New User</Link></li>
-        <li><Link to="/admin/all-users">List all Users</Link></li>
+      
+        <li><Link to="/admin/all-users">Users</Link></li>
         <li><Link to="/admin/student-list">Student</Link></li>
         <li><Link to="/admin/teacher-list">Teacher</Link></li>
       </ul>

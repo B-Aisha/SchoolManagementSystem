@@ -12,7 +12,7 @@ namespace SchoolManagementAPI.models
         //Required
         public string? ApplicationUserID { get; set; }
 
-        //[ForeignKey("UserId")]
+        //[ForeignKey("ApplicationUserId")]
         public ApplicationUser? ApplicationUser { get; set; }
 
         public string? ParentId { get; set; }

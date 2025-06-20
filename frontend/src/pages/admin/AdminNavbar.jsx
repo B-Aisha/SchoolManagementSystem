@@ -18,9 +18,21 @@ const AdminNavbar = () => {
 
   return (
     <div className="admin-navbar">
-      
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      
+       <button 
+    onClick={handleLogout}
+    style={{
+      marginLeft: 'auto',
+      padding: '6px 12px',
+      backgroundColor: '#DD1717',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    Logout
+  </button>
+        
     </div>
   );
 };

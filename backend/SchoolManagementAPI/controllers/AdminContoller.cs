@@ -122,7 +122,7 @@ public class AdminController : ControllerBase
             user.PhoneNumber
         });
     }//end of get user by id controller 
-    
+
     [HttpPut("user/{id}")]
     //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDto dto)
@@ -155,6 +155,22 @@ public class AdminController : ControllerBase
 
         return BadRequest(result.Errors);
     }//end of the delete user controller
+    
+    [HttpPost("assign-role")]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AssignRole([FromBody] RoleAssignmentDto model)
+    {
+        var user = await _userManager.FindByIdAsync(model.UserId);
+        if (user == null)
+            return NotFound("User not found");
+
+        var currentRoles = await _userManager.GetRolesAsync(user);
+        await _userManager.RemoveFromRolesAsync(user, currentRoles);
+        await _userManager.AddToRoleAsync(user, model.Role);
+
+        return Ok("Role assigned successfully");
+    }
+
 
 
 
