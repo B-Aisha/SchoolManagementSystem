@@ -59,27 +59,44 @@ namespace SchoolManagementAPI.Controllers
 
             return Ok(courseDtos);
         }//end of course list controller
-        
+
         // UPDATE
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto dto)
-    {
-        var existingCourse = await _context.Courses.FindAsync(id);
-        if (existingCourse == null)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto dto)
         {
-            return NotFound("Course not found.");
-        }
+            var existingCourse = await _context.Courses.FindAsync(id);
+            if (existingCourse == null)
+            {
+                return NotFound("Course not found.");
+            }
 
-        // Update the fields
-        existingCourse.Title = dto.Title;
-        existingCourse.Credits = dto.Credits;
-        existingCourse.TeacherId = dto.TeacherId;
+            // Update the fields
+            existingCourse.Title = dto.Title;
+            existingCourse.Credits = dto.Credits;
+            existingCourse.TeacherId = dto.TeacherId;
 
-        _context.Courses.Update(existingCourse);
-        await _context.SaveChangesAsync();
+            _context.Courses.Update(existingCourse);
+            await _context.SaveChangesAsync();
 
-        return Ok("Course updated successfully.");
-    }
+            return Ok("Course updated successfully.");
+        }//end of update course controller
+    
+    // DELETE: api/course/delete/{id}
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteCourse(string id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+            {
+                return NotFound("Course not found");
+            }
+
+            _context.Courses.Remove(course);
+            await _context.SaveChangesAsync();
+
+            return Ok("Course deleted successfully");
+        }//end of delete course controller
+
 
 
     }
