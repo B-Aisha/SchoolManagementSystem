@@ -21,7 +21,7 @@ namespace SchoolManagementAPI.Controllers
             )
         {
             _context = context;
-            _configuration =configuration;
+            _configuration = configuration;
         }
 
         // CREATE
@@ -41,7 +41,7 @@ namespace SchoolManagementAPI.Controllers
             return Ok("Course created successfully");
         }//end of create course controller
 
-                // GET: api/course/all
+        // GET: api/course/all
         [HttpGet("all")]
         public async Task<IActionResult> GetAllCourses()
         {
@@ -58,7 +58,29 @@ namespace SchoolManagementAPI.Controllers
             }).ToList();
 
             return Ok(courseDtos);
+        }//end of course list controller
+        
+        // UPDATE
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto dto)
+    {
+        var existingCourse = await _context.Courses.FindAsync(id);
+        if (existingCourse == null)
+        {
+            return NotFound("Course not found.");
         }
+
+        // Update the fields
+        existingCourse.Title = dto.Title;
+        existingCourse.Credits = dto.Credits;
+        existingCourse.TeacherId = dto.TeacherId;
+
+        _context.Courses.Update(existingCourse);
+        await _context.SaveChangesAsync();
+
+        return Ok("Course updated successfully.");
+    }
+
 
     }
 }
