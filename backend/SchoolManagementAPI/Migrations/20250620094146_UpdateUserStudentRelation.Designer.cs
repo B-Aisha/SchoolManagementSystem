@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagementAPI.data;
 
@@ -11,9 +12,11 @@ using SchoolManagementAPI.data;
 namespace SchoolManagementAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620094146_UpdateUserStudentRelation")]
+    partial class UpdateUserStudentRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace SchoolManagementAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.Property<string>("CoursesCourseId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("StudentsStudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CoursesCourseId", "StudentsStudentId");
-
-                    b.HasIndex("StudentsStudentId");
-
-                    b.ToTable("CourseStudent");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -281,13 +269,19 @@ namespace SchoolManagementAPI.Migrations
                     b.Property<int>("Credits")
                         .HasColumnType("int");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseId");
+
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("TeacherId");
 
@@ -410,7 +404,8 @@ namespace SchoolManagementAPI.Migrations
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserID")
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -422,26 +417,10 @@ namespace SchoolManagementAPI.Migrations
 
                     b.HasKey("TeacherId");
 
-                    b.HasIndex("ApplicationUserID")
-                        .IsUnique()
-                        .HasFilter("[ApplicationUserID] IS NOT NULL");
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
 
                     b.ToTable("Teachers");
-                });
-
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.HasOne("SchoolManagementAPI.models.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SchoolManagementAPI.models.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsStudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -520,6 +499,10 @@ namespace SchoolManagementAPI.Migrations
 
             modelBuilder.Entity("SchoolManagementAPI.models.Course", b =>
                 {
+                    b.HasOne("SchoolManagementAPI.models.Student", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("StudentId");
+
                     b.HasOne("SchoolManagementAPI.models.Teacher", "Teacher")
                         .WithMany("Courses")
                         .HasForeignKey("TeacherId");
@@ -603,8 +586,9 @@ namespace SchoolManagementAPI.Migrations
                 {
                     b.HasOne("SchoolManagementAPI.models.ApplicationUser", "ApplicationUser")
                         .WithOne("Teacher")
-                        .HasForeignKey("SchoolManagementAPI.models.Teacher", "ApplicationUserID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SchoolManagementAPI.models.Teacher", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });
@@ -640,6 +624,8 @@ namespace SchoolManagementAPI.Migrations
             modelBuilder.Entity("SchoolManagementAPI.models.Student", b =>
                 {
                     b.Navigation("Attendances");
+
+                    b.Navigation("Courses");
 
                     b.Navigation("Enrollments");
                 });

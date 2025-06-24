@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolManagementAPI.models
 {
@@ -10,10 +11,8 @@ namespace SchoolManagementAPI.models
         public string Name { get; set; } = string.Empty;
         public string? Email { get; set; }
 
-        [Required]
-        public string? ApplicationUserId { get; set; } 
-
-        //[ForeignKey("UserId")]
+        [ForeignKey("ApplicationUser")]
+        public string? ApplicationUserID { get; set; } 
         public ApplicationUser? ApplicationUser { get; set; }
 
         public ICollection<Enrollment>? Enrollments { get; set; }

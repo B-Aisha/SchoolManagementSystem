@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagementAPI.data;
 
@@ -11,9 +12,11 @@ using SchoolManagementAPI.data;
 namespace SchoolManagementAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250624062142_AddCourseEntity")]
+    partial class AddCourseEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,7 +413,8 @@ namespace SchoolManagementAPI.Migrations
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserID")
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -422,9 +426,8 @@ namespace SchoolManagementAPI.Migrations
 
                     b.HasKey("TeacherId");
 
-                    b.HasIndex("ApplicationUserID")
-                        .IsUnique()
-                        .HasFilter("[ApplicationUserID] IS NOT NULL");
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
 
                     b.ToTable("Teachers");
                 });
@@ -603,8 +606,9 @@ namespace SchoolManagementAPI.Migrations
                 {
                     b.HasOne("SchoolManagementAPI.models.ApplicationUser", "ApplicationUser")
                         .WithOne("Teacher")
-                        .HasForeignKey("SchoolManagementAPI.models.Teacher", "ApplicationUserID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SchoolManagementAPI.models.Teacher", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });

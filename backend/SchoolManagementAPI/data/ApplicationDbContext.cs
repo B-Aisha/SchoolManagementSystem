@@ -42,7 +42,7 @@ namespace SchoolManagementAPI.data
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(a => a.Teacher)
                 .WithOne(t => t.ApplicationUser)
-                .HasForeignKey<Teacher>(t => t.ApplicationUserId)
+                .HasForeignKey<Teacher>(t => t.ApplicationUserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-One: ApplicationUser <-> Parent
@@ -52,7 +52,7 @@ namespace SchoolManagementAPI.data
                 .HasForeignKey<Parent>(p => p.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-                // One-to-Many: Teacher -> Courses
+            // One-to-Many: Teacher -> Courses
             modelBuilder.Entity<Teacher>()
                 .HasMany(t => t.Courses)
                 .WithOne(c => c.Teacher)
@@ -60,9 +60,9 @@ namespace SchoolManagementAPI.data
 
             // One-to-Many: Student -> Attendances
             //modelBuilder.Entity<Student>()
-                //.HasMany(s => s.Attendances)
-                //.WithOne(a => a.Student)
-                //.HasForeignKey(a => a.StudentId);
+            //.HasMany(s => s.Attendances)
+            //.WithOne(a => a.Student)
+            //.HasForeignKey(a => a.StudentId);
 
             // One-to-Many: Course -> Attendances
             modelBuilder.Entity<Course>()
@@ -72,9 +72,9 @@ namespace SchoolManagementAPI.data
 
             // One-to-Many: Student -> Grades
             //modelBuilder.Entity<Student>()
-                //.HasMany(s => s.Grades)
-                //.WithOne(g => g.Student)
-                //.HasForeignKey(g => g.StudentId);
+            //.HasMany(s => s.Grades)
+            //.WithOne(g => g.Student)
+            //.HasForeignKey(g => g.StudentId);
 
             // One-to-Many: Course -> Grades
             modelBuilder.Entity<Course>()

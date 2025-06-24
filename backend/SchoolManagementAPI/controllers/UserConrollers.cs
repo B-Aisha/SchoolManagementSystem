@@ -72,6 +72,19 @@ namespace SchoolManagementAPI.controllers
                 await _userManager.AddToRoleAsync(user, model.Role);
             }
 
+             // ✅ If role is Student, create a Student profile
+        if (model.Role.Equals("Student", StringComparison.OrdinalIgnoreCase))
+        {
+            var student = new Student
+            {
+                StudentId = Guid.NewGuid().ToString(),
+                ApplicationUserID = user.Id
+            };
+
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+        }
+
             return Ok("User registered successfully.");
         }
 
@@ -79,40 +92,39 @@ namespace SchoolManagementAPI.controllers
         //  LOGIN: Leave this for later
         // Controllers/AuthController.cs
         [HttpPost("login")]
-public async Task<IActionResult> Login([FromBody] LoginRequest model)
-{
-    var user = await _userManager.FindByEmailAsync(model.Email);
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
-    if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
-    {
-        return Unauthorized("Invalid email or password.");
-    }
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                return Unauthorized("Invalid email or password.");
+            }
 
-    // 2. Create claims
-    var claims = new[]
-    {
+            // 2. Create claims
+            var claims = new[]
+            {
         new Claim(ClaimTypes.Name, user.Email),
         new Claim(ClaimTypes.Role, user.Role ?? "User")
     };
 
-    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-    var token = new JwtSecurityToken(
-        issuer: _configuration["Jwt:Issuer"],
-        audience: _configuration["Jwt:Audience"],
-        claims: claims,
-        expires: DateTime.Now.AddHours(1),
-        signingCredentials: creds
-    );
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds
+            );
 
-    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-    return Ok(new { token = tokenString });
-}
+            return Ok(new { token = tokenString });
+        }
 
 
-        
     }
 }
 

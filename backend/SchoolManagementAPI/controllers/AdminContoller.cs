@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using SchoolManagementAPI.models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using SchoolManagementAPI.Dto;
@@ -55,6 +56,20 @@ public class AdminController : ControllerBase
             await _roleManager.CreateAsync(new IdentityRole(model.Role));
 
         await _userManager.AddToRoleAsync(user, model.Role);
+
+        if (model.Role == "Student")
+        {
+            var student = new Student
+            {
+                StudentId = Guid.NewGuid().ToString(),
+                ApplicationUserID = user.Id
+            };
+
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+        }
+
+
 
         return Ok("User created successfully");
     }//for create user
@@ -155,7 +170,7 @@ public class AdminController : ControllerBase
 
         return BadRequest(result.Errors);
     }//end of the delete user controller
-    
+
     [HttpPost("assign-role")]
     //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> AssignRole([FromBody] RoleAssignmentDto model)
@@ -168,8 +183,54 @@ public class AdminController : ControllerBase
         await _userManager.RemoveFromRolesAsync(user, currentRoles);
         await _userManager.AddToRoleAsync(user, model.Role);
 
+        if (model.Role == "Student")
+        {
+            await CreateStudentProfile(user);
+        }
+        else if (model.Role == "Teacher")
+        {
+        await CreateTeacherProfile(user);
+        }
+
+
         return Ok("Role assigned successfully");
+    }//end of assign role controller
+
+    // ✅ HELPER: Create custom Student record
+    private async Task CreateStudentProfile(ApplicationUser user)
+    {
+        var exists = await _context.Students.AnyAsync(s => s.ApplicationUserID == user.Id);
+        if (!exists)
+        {
+            var student = new Student
+            {
+                StudentId = Guid.NewGuid().ToString(),
+                ApplicationUserID = user.Id,
+                ApplicationUser = user,
+                AdmNo = $"ADM{DateTime.Now.Ticks}"
+            };
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+        }
+    }   
+    
+        private async Task CreateTeacherProfile(ApplicationUser user)
+    {
+        var exists = await _context.Teachers.AnyAsync(t => t.ApplicationUserID == user.Id);
+        if (!exists)
+        {
+            var teacher = new Teacher
+            {
+                TeacherId = Guid.NewGuid().ToString(),
+                ApplicationUserID = user.Id
+            };
+
+            _context.Teachers.Add(teacher);
+            await _context.SaveChangesAsync();
+        }
     }
+
+
 
 
 

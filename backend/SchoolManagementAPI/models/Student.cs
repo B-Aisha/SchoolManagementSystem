@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace SchoolManagementAPI.models
 {
     public class Student
@@ -9,10 +11,11 @@ namespace SchoolManagementAPI.models
 
         public string? AdmNo { get; set; }
 
-        //Required
-        public string? ApplicationUserID { get; set; }
 
-        //[ForeignKey("ApplicationUserId")]
+        [ForeignKey("ApplicationUser")]
+
+         public string? ApplicationUserID { get; set; }
+
         public ApplicationUser? ApplicationUser { get; set; }
 
         public string? ParentId { get; set; }
@@ -22,8 +25,8 @@ namespace SchoolManagementAPI.models
         public ICollection<Enrollment>? Enrollments { get; set; } = new List<Enrollment>();
         public ICollection<Attendance>? Attendances { get; set; } = new List<Attendance>();
 
-        
-    //public ICollection<Grade>? Grades { get; set; }
+
+        //public ICollection<Grade>? Grades { get; set; }
         // public ICollection<Attendance>? Attendances { get; set; }
     }
 }
