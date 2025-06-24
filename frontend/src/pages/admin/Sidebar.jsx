@@ -13,6 +13,7 @@ const Sidebar = () => {
         <li><Link to="/admin/all-users">Users</Link></li>
         <li><Link to="/admin/student-list">Student</Link></li>
         <li><Link to="/admin/teacher-list">Teacher</Link></li>
+        <li><Link to="/admin/add-course">+ Add Course</Link></li>
       </ul>
     </div>
   );

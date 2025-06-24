@@ -24,6 +24,7 @@ import EditTeacher from './pages/admin/EditTeacher';
 import DeleteStudent from './pages/admin/DeleteStudent';
 import DeleteTeacher from './pages/admin/DeleteTeacher';
 import AddTeacher from './pages/admin/AddTeacher';
+import AddCourse from './pages/admin/AddCourse';
 
 const App = () => {
   return (
@@ -49,6 +50,8 @@ const App = () => {
       <Route path="/admin/delete-teacher/:id" element={<DeleteTeacher />} />
       <Route path="/admin/add-teacher" element={<AddTeacher />} />
       <Route path="/debug-token" element={<DebugToken />} />
+      <Route path="/admin/add-course" element={<AddCourse />} />
+
     </Routes>
   );
 };
