@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css'; // reuse your existing table styles
+import { Link } from 'react-router-dom'; 
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -35,6 +36,7 @@ const CourseList = () => {
               <th>Title</th>
               <th>Credits</th>
               <th>Teacher ID</th>
+              <th>Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +46,15 @@ const CourseList = () => {
                 <td>{course.title}</td>
                 <td>{course.credits}</td>
                 <td>{course.teacherId || 'N/A'}</td>
+                <td><Link
+                to={`/admin/edit-course/${course.courseId}`}
+                style={{
+                backgroundColor: '#007bff',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                textDecoration: 'none'
+                }}>Edit </Link></td>
               </tr>
             ))}
           </tbody>
