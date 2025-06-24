@@ -41,6 +41,24 @@ namespace SchoolManagementAPI.Controllers
             return Ok("Course created successfully");
         }//end of create course controller
 
-        
+                // GET: api/course/all
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllCourses()
+        {
+            var courses = await _context.Courses
+                .Include(c => c.Teacher) // Optional: includes related teacher info
+                .ToListAsync();
+
+            var courseDtos = courses.Select(c => new CourseDto
+            {
+                CourseId = c.CourseId,
+                Title = c.Title,
+                Credits = c.Credits,
+                TeacherId = c.TeacherId
+            }).ToList();
+
+            return Ok(courseDtos);
+        }
+
     }
 }
