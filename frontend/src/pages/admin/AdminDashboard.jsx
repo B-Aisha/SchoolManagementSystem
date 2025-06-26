@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import AdminNavbar from './AdminNavbar';
 import '../../index.css';
 import './admin.css';
-import { FaUsers,  FaChalkboardTeacher, FaUserGraduate} from 'react-icons/fa';
+import { FaUsers,  FaChalkboardTeacher, FaUserGraduate, FaClipboardList} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 
@@ -32,6 +32,11 @@ const AdminDashboard = () => {
               <FaUserGraduate size={40} />
               <h3>Students</h3>
             </Link>
+            <Link to="/admin/courses" className="admin-card">
+              <FaClipboardList size={40} />
+              <h3>Course</h3>
+            </Link>
+
 
           </div>
         </div>

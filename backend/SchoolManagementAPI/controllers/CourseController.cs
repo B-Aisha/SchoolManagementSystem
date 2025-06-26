@@ -80,8 +80,8 @@ namespace SchoolManagementAPI.Controllers
 
             return Ok("Course updated successfully.");
         }//end of update course controller
-    
-    // DELETE: api/course/delete/{id}
+
+        // DELETE: api/course/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCourse(string id)
         {
@@ -96,6 +96,31 @@ namespace SchoolManagementAPI.Controllers
 
             return Ok("Course deleted successfully");
         }//end of delete course controller
+
+        [HttpPost("assign-course")]
+        public async Task<IActionResult> AssignCourseToStudent([FromBody] CourseAssignmentDto dto)
+        {
+            var student = await _context.Students.FindAsync(dto.StudentId);
+            var course = await _context.Courses.FindAsync(dto.CourseId);
+
+            if (student == null || course == null)
+                return NotFound("Student or course not found.");
+
+            var enrollment = new Enrollment
+            {
+                EnrollmentId = Guid.NewGuid().ToString(),
+                StudentId = dto.StudentId,
+                CourseId = dto.CourseId
+            };
+
+            _context.Enrollments.Add(enrollment);
+            await _context.SaveChangesAsync();
+
+            return Ok("Course assigned to student successfully.");
+        }//end of enrollment controller
+
+        
+
 
 
 

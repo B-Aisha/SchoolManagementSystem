@@ -14,7 +14,7 @@ namespace SchoolManagementAPI.models
         public string? CourseId { get; set; }
         public Course? Course { get; set; }
 
-        public DateTime EnrolledOn { get; set; }
+        public DateTime EnrolledOn { get; set; } = DateTime.UtcNow;
     
         public ICollection<Grade>? Grades { get; set; } = new List<Grade>();
     }

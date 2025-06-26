@@ -22,12 +22,42 @@ const CourseList = () => {
     };
 
     fetchCourses();
-  }, []);
+    }, []);
+    const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this course?")) return;
+
+    try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`https://localhost:7260/api/course/delete/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+        });
+        setCourses(prev => prev.filter(course => course.courseId !== id));
+    } catch (error) {
+        console.error("Error deleting course:", error);
+    }
+    };
+
 
   return (
     <div className="table-container">
       <div>
         <h2 className="table-heading">All Courses</h2>
+
+        <div style={{ marginBottom: '20px', textAlign: 'right' }}>
+                  <Link
+                   to="/admin/add-course"
+                  style={{
+                  backgroundColor: '#28a745',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  fontWeight: 'bold'
+                    }}>+ Add Course
+                   </Link>
+                </div>
 
         <table className="custom-table">
           <thead>
@@ -55,6 +85,17 @@ const CourseList = () => {
                 borderRadius: '4px',
                 textDecoration: 'none'
                 }}>Edit </Link></td>
+                <td><button
+                onClick={() => handleDelete(course.courseId)}
+                style={{
+                backgroundColor: '#dc3545',
+                color: 'white',
+                padding: '6px 12px',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+                }} >Delete </button></td>
+
               </tr>
             ))}
           </tbody>
