@@ -181,10 +181,31 @@ public class AdminController : ControllerBase
         if (user == null)
             return NotFound("User not found");
 
+        //Remove from current ASP.NET Identity roles
         var currentRoles = await _userManager.GetRolesAsync(user);
         await _userManager.RemoveFromRolesAsync(user, currentRoles);
         await _userManager.AddToRoleAsync(user, model.Role);
 
+        //  Update Role in ApplicationUser table
+        user.Role = model.Role;
+        await _userManager.UpdateAsync(user);
+
+        //  Remove user from any old custom table
+        var existingStudent = await _context.Students.FirstOrDefaultAsync(s => s.ApplicationUserID == user.Id);
+        if (existingStudent != null)
+        {
+            _context.Students.Remove(existingStudent);
+        }
+
+        var existingTeacher = await _context.Teachers.FirstOrDefaultAsync(t => t.ApplicationUserID == user.Id);
+        if (existingTeacher != null)
+        {
+            _context.Teachers.Remove(existingTeacher);
+        }
+
+        await _context.SaveChangesAsync();  // Save deletion of old records
+
+        //  Add to new custom table based on role
         if (model.Role == "Student")
         {
             await CreateStudentProfile(user);
@@ -198,7 +219,7 @@ public class AdminController : ControllerBase
         return Ok("Role assigned successfully");
     }//end of assign role controller
 
-    // ✅ HELPER: Create custom Student record
+    //  HELPER: Create custom Student record
     private async Task CreateStudentProfile(ApplicationUser user)
     {
         var exists = await _context.Students.AnyAsync(s => s.ApplicationUserID == user.Id);
