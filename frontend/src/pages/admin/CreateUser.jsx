@@ -12,7 +12,8 @@ const CreateUser = () => {
     LastName: '',
     Email: '',
     role: '',
-    password: ''
+    password: '',
+    PhoneNumber: ''
   });
 
   const handleChange = (e) => {
@@ -41,6 +42,7 @@ const CreateUser = () => {
             <input type="text" name="firstName" placeholder="Firstname" onChange={handleChange} required />
             <input type="text" name="lastName" placeholder="Lastname" onChange={handleChange} required />
             <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+            <input type="text" name="phonenumber" placeholder="PhoneNumber" onChange={handleChange} required />
             <input type="text" name="role" placeholder="Role (e.g. Student, Teacher, Parent, Admin)" onChange={handleChange} required />
             <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
             <button className="button" type="submit">Create User</button>

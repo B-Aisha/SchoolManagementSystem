@@ -84,7 +84,17 @@ const CourseList = () => {
                 padding: '6px 12px',
                 borderRadius: '4px',
                 textDecoration: 'none'
-                }}>Edit </Link></td>
+                }}>Edit </Link></td>               
+                <td><Link
+                to={`/admin/assign-student/${course.courseId}`}
+                style={{
+                  backgroundColor: '#28a745',
+                  color: 'white',
+                  padding: '6px 12px',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  display: 'inline-block'
+                }}>Assign Student</Link></td>
                 <td><button
                 onClick={() => handleDelete(course.courseId)}
                 style={{

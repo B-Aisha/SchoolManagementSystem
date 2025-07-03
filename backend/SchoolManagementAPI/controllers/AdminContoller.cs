@@ -146,6 +146,8 @@ public class AdminController : ControllerBase
         if (user == null) return NotFound();
 
         user.UserName = dto.UserName;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
         user.Email = dto.Email;
         user.PhoneNumber = dto.PhoneNumber;
 
@@ -189,7 +191,7 @@ public class AdminController : ControllerBase
         }
         else if (model.Role == "Teacher")
         {
-        await CreateTeacherProfile(user);
+            await CreateTeacherProfile(user);
         }
 
 
@@ -206,15 +208,16 @@ public class AdminController : ControllerBase
             {
                 StudentId = Guid.NewGuid().ToString(),
                 ApplicationUserID = user.Id,
-                ApplicationUser = user,
-                AdmNo = $"ADM{DateTime.Now.Ticks}"
+                FullName = $"{user.FirstName} {user.LastName}",
+                AdmNo = $"ADM{DateTime.Now.Ticks}",
+
             };
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
         }
-    }   
-    
-        private async Task CreateTeacherProfile(ApplicationUser user)
+    }
+
+    private async Task CreateTeacherProfile(ApplicationUser user)
     {
         var exists = await _context.Teachers.AnyAsync(t => t.ApplicationUserID == user.Id);
         if (!exists)
@@ -222,13 +225,33 @@ public class AdminController : ControllerBase
             var teacher = new Teacher
             {
                 TeacherId = Guid.NewGuid().ToString(),
-                ApplicationUserID = user.Id
+                ApplicationUserID = user.Id,
+                Email = user.Email,
+
             };
 
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
         }
     }
+    
+        [HttpGet("all-students")]
+    public async Task<IActionResult> GetAllCustomStudents()
+    {
+        var students = await _context.Students
+            .Include(s => s.ApplicationUser)
+            .Select(s => new StudentWithUserDto
+            {
+                StudentId = s.StudentId,
+                UserName = s.ApplicationUser.UserName,
+                Email = s.ApplicationUser.Email,
+                ApplicationUserId = s.ApplicationUserID
+            })
+            .ToListAsync();
+
+        return Ok(students);
+    }//end of get students controller
+
 
 
 

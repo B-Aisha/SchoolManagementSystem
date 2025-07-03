@@ -119,7 +119,24 @@ namespace SchoolManagementAPI.Controllers
             return Ok("Course assigned to student successfully.");
         }//end of enrollment controller
 
-        
+        [HttpGet("{courseId}/enrolled-students")]
+public async Task<IActionResult> GetEnrolledStudents(string courseId)
+{
+    var enrolledStudents = await _context.Enrollments
+        .Where(e => e.CourseId == courseId)
+        .Include(e => e.Student)
+        .ThenInclude(s => s.ApplicationUser)
+        .Select(e => new
+        {
+            StudentId = e.StudentId,
+            UserName = e.Student.ApplicationUser.UserName,
+            Email = e.Student.ApplicationUser.Email
+        })
+        .ToListAsync();
+
+    return Ok(enrolledStudents);
+}
+
 
 
 

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const AddStudent = () => {
+const AddTeacher = () => {
   const navigate = useNavigate();
   const [teacher, setTeacher] = useState({
     userName: '',
+    FirstName: '',
+    LastName: '',
     email: '',
     phoneNumber: '',
     password: ''
@@ -19,7 +21,7 @@ const AddStudent = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://localhost:7260/api/auth/register', {
+      await axios.post('https://localhost:7260/api/users/register', {
         ...teacher,
         role: 'Teacher'
       }, {
@@ -41,6 +43,14 @@ const AddStudent = () => {
         <div style={formGroup}>
           <label>Username:</label>
           <input type="text" name="userName" value={teacher.userName} onChange={handleChange} style={inputStyle} />
+        </div>
+        <div style={formGroup}>
+          <label>Firstname:</label>
+          <input type="text" name="FirstName" value={teacher.FirstName} onChange={handleChange} style={inputStyle} />
+        </div>
+        <div style={formGroup}>
+          <label>Lastname:</label>
+          <input type="text" name="LastName" value={teacher.LastName} onChange={handleChange} style={inputStyle} />
         </div>
         <div style={formGroup}>
           <label>Email:</label>
@@ -83,4 +93,4 @@ const buttonStyle = {
   fontWeight: 'bold'
 };
 
-export default AddStudent;
+export default AddTeacher;

@@ -11,6 +11,8 @@ namespace SchoolManagementAPI.models
 
         public string? AdmNo { get; set; }
 
+         public string? FullName { get; set; }
+
 
         [ForeignKey("ApplicationUser")]
 

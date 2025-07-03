@@ -7,6 +7,8 @@ const EditStudent = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState({
     userName: '',
+    FirstName:'',
+    LastName:'',
     email: '',
     phoneNumber: ''
   });
@@ -57,6 +59,20 @@ const EditStudent = () => {
           value={student.userName}
           onChange={handleChange}
           placeholder="Username"
+          style={inputStyle}
+        /> 
+        <input
+          name="FirstName"
+          value={student.FirstName}
+          onChange={handleChange}
+          placeholder="Firstname"
+          style={inputStyle}
+        />
+         <input
+          name="LastName"
+          value={student.LastName}
+          onChange={handleChange}
+          placeholder="Lastname"
           style={inputStyle}
         />
         <input

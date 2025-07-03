@@ -6,6 +6,8 @@ const AddStudent = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState({
     userName: '',
+    FirstName: '',
+    LastName: '',
     email: '',
     phoneNumber: '',
     password: ''
@@ -41,6 +43,14 @@ const AddStudent = () => {
         <div style={formGroup}>
           <label>Username:</label>
           <input type="text" name="userName" value={student.userName} onChange={handleChange} style={inputStyle} />
+        </div>
+        <div style={formGroup}>
+          <label>Firstname:</label>
+          <input type="text" name="FirstName" value={student.FirstName} onChange={handleChange} style={inputStyle} />
+        </div>
+        <div style={formGroup}>
+          <label>Lastname:</label>
+          <input type="text" name="LastName" value={student.LastName} onChange={handleChange} style={inputStyle} />
         </div>
         <div style={formGroup}>
           <label>Email:</label>
