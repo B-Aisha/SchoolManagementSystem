@@ -101,12 +101,17 @@ namespace SchoolManagementAPI.controllers
                 return Unauthorized("Invalid email or password.");
             }
 
-            // 2. Create claims
+            // 1. Get the user's role
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault() ?? "User";
+
+            // 2. Generate JWT Claims
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, user.Email),
-        new Claim(ClaimTypes.Role, user.Role ?? "User")
-    };
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("id", user.Id)  // Add User Id as claim
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -121,8 +126,25 @@ namespace SchoolManagementAPI.controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return Ok(new { token = tokenString });
-        }
+             // 3. Fetch StudentId if role is Student
+            string? studentId = null;
+            if (role == "Student")
+            {
+                var student = await _context.Students.FirstOrDefaultAsync(s => s.ApplicationUserID == user.Id);
+                if (student != null)
+                {
+                    studentId = student.StudentId;
+                }
+            }
+
+            // 4. Return all necessary data
+            return Ok(new 
+            {
+                token = tokenString,
+                role,
+                studentId
+            });
+        }//end of loggin logic
 
 
     }

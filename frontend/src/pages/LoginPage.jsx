@@ -30,11 +30,23 @@ const Login = () => {
 
     try {
       const response = await axios.post('https://localhost:7260/api/Users/login', formData);
-      const token = response.data.token;
-      localStorage.setItem('token', token);//store token since we're using JWT
-      
+      const { token, role, studentId } = response.data;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
+
+    // ✅ Decode token to optionally store user email/name (optional)
       const decoded = jwtDecode(token);
-      const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      const email = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+      if (email) {
+        localStorage.setItem('userEmail', email);
+      }
+
+
+    if (studentId) {
+      localStorage.setItem('studentId', studentId);
+    }
+
 
       // Navigate based on role
     if (role === 'Admin') navigate('/admin-dashboard');
@@ -56,6 +68,7 @@ const Login = () => {
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
+      
       <form  className="auth-form" onSubmit={handleSubmit}>
         <input
           type="email"
