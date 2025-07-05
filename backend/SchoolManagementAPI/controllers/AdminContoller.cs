@@ -247,6 +247,7 @@ public class AdminController : ControllerBase
             {
                 TeacherId = Guid.NewGuid().ToString(),
                 ApplicationUserID = user.Id,
+                FullName = $"{user.FirstName} {user.LastName}",
                 Email = user.Email,
 
             };
@@ -255,8 +256,8 @@ public class AdminController : ControllerBase
             await _context.SaveChangesAsync();
         }
     }
-    
-        [HttpGet("all-students")]
+
+    [HttpGet("all-students")]
     public async Task<IActionResult> GetAllCustomStudents()
     {
         var students = await _context.Students
@@ -272,6 +273,27 @@ public class AdminController : ControllerBase
 
         return Ok(students);
     }//end of get students controller
+
+    [HttpGet("all-teachers")]
+    public async Task<IActionResult> GetAllCustomTeachers()
+    {
+        var teachers = await _context.Teachers
+            .Include(t => t.ApplicationUser)
+            .Select(t => new TeacherWithUserDto
+            {
+                TeacherId = t.TeacherId,
+                UserName = t.ApplicationUser.UserName,
+                FullName = t.FullName,
+                Email = t.ApplicationUser.Email,
+                ApplicationUserId = t.ApplicationUserID
+            })
+            .ToListAsync();
+
+        return Ok(teachers);
+    }
+//end of get all techers controller
+
+
 
 
 

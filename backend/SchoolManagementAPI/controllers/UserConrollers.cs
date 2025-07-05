@@ -78,7 +78,8 @@ namespace SchoolManagementAPI.controllers
             var student = new Student
             {
                 StudentId = Guid.NewGuid().ToString(),
-                ApplicationUserID = user.Id
+                ApplicationUserID = user.Id,
+                
             };
 
             _context.Students.Add(student);
