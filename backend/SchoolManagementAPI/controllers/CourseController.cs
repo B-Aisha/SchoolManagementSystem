@@ -54,7 +54,8 @@ namespace SchoolManagementAPI.Controllers
                 CourseId = c.CourseId,
                 Title = c.Title,
                 Credits = c.Credits,
-                TeacherId = c.TeacherId
+                TeacherId = c.TeacherId,
+                TeacherName = c.Teacher != null ? c.Teacher.FullName : "Unassigned"
             }).ToList();
 
             return Ok(courseDtos);

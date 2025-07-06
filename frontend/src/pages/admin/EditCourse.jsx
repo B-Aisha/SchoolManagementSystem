@@ -11,6 +11,9 @@ const EditCourse = () => {
     teacherId: ''
   });
 
+  const [teachers, setTeachers] = useState([]);
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -26,7 +29,20 @@ const EditCourse = () => {
       }
     };
 
+    const fetchTeachers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('https://localhost:7260/api/admin/all-teachers', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setTeachers(response.data);
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    };
+
     fetchCourse();
+    fetchTeachers();
   }, [id]);
 
   const handleChange = (e) => {
@@ -42,28 +58,34 @@ const EditCourse = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate('/admin/courses');
+
+       setMessage('Course updated successfully!');
+      setTimeout(() => navigate('/admin/courses'), 1500);  // Redirect after 1.5 seconds
+    
     } catch (error) {
       console.error('Error updating course:', error);
+      setMessage('Failed to update course.');
     }
   };
 
   return (
     <div style={{ padding: '40px', maxWidth: '500px', margin: '0 auto' }}>
       <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Edit Course</h2>
+
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '16px' }}>
+        <div style={formGroupStyle}>
           <label>Title:</label>
           <input
             name="title"
             value={course.title}
             onChange={handleChange}
             placeholder="Course Title"
-            style={{ width: '100%', padding: '8px', border: '1px solid #ccc' }}
+            style={inputStyle}
+            required
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
+        <div style={formGroupStyle}>
           <label>Credits:</label>
           <input
             name="credits"
@@ -71,37 +93,57 @@ const EditCourse = () => {
             onChange={handleChange}
             placeholder="Credits"
             type="number"
-            style={{ width: '100%', padding: '8px', border: '1px solid #ccc' }}
+            style={inputStyle}
+            required
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label>Teacher ID:</label>
-          <input
+        <div style={formGroupStyle}>
+          <label>Teacher:</label>
+          <select
             name="teacherId"
             value={course.teacherId}
             onChange={handleChange}
-            placeholder="Teacher ID"
-            style={{ width: '100%', padding: '8px', border: '1px solid #ccc' }}
-          />
+            style={inputStyle}
+            required
+          >
+            <option value="">-- Select Teacher --</option>
+            {teachers.map(teacher => (
+              <option key={teacher.teacherId} value={teacher.teacherId}>
+                {teacher.fullName}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <button
-          type="submit"
-          style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '10px 16px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Update Course
-        </button>
+        <button type="submit" style={buttonStyle}>Update Course</button>
+
+        {message && <p style={{ marginTop: '15px' }}>{message}</p>}
       </form>
     </div>
   );
 };
 
+const formGroupStyle = {
+  marginBottom: '15px',
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const inputStyle = {
+  padding: '10px',
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+  marginTop: '5px'
+};
+
+const buttonStyle = {
+  padding: '10px 20px',
+  backgroundColor: '#007bff',
+  color: 'white',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer'
+};
+  
 export default EditCourse;

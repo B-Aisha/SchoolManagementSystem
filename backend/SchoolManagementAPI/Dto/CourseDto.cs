@@ -6,5 +6,7 @@ namespace SchoolManagementAPI.Dto
         public string? Title { get; set; }
         public int Credits { get; set; }
         public string? TeacherId { get; set; }
+        public string? TeacherName { get; set; }
+
     }
 }

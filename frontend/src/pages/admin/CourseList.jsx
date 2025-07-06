@@ -65,7 +65,7 @@ const CourseList = () => {
               <th>Course ID</th>
               <th>Title</th>
               <th>Credits</th>
-              <th>Teacher ID</th>
+              <th>Teacher Name</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -75,7 +75,7 @@ const CourseList = () => {
                 <td>{course.courseId}</td>
                 <td>{course.title}</td>
                 <td>{course.credits}</td>
-                <td>{course.teacherId || 'N/A'}</td>
+                <td>{course.teacherName || 'Unassigned'}</td>
                 <td><Link
                 to={`/admin/edit-course/${course.courseId}`}
                 style={{

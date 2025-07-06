@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
 const AddCourse = () => {
@@ -8,7 +8,24 @@ const AddCourse = () => {
     teacherId: ''
   });
 
+  const [teachers, setTeachers] = useState([]);
+
   const [message, setMessage] = useState('');
+
+    useEffect(() => {
+      const fetchTeachers = async () => {
+        const token = localStorage.getItem('token');
+        try {
+          const response = await axios.get('https://localhost:7260/api/admin/all-teachers', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setTeachers(response.data);
+        } catch (error) {
+          console.error('Failed to fetch teachers:', error);
+        }
+      };
+      fetchTeachers();
+    }, []);
 
   const handleChange = (e) => {
     setCourse({ ...course, [e.target.name]: e.target.value });
@@ -19,7 +36,7 @@ const AddCourse = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('https://localhost:7260/api/course/create', course, {
+      await axios.post('https://localhost:7260/api/course/create', course, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,14 +76,21 @@ const AddCourse = () => {
           />
         </div>
         <div style={formGroupStyle}>
-          <label>Teacher ID</label>
-          <input
-            type="text"
+          <label>Teacher</label>
+          <select
             name="teacherId"
             value={course.teacherId}
             onChange={handleChange}
             style={inputStyle}
-          />
+            required
+          >
+            <option value="">Select Teacher</option>
+            {teachers.map((teacher) => (
+              <option key={teacher.teacherId} value={teacher.teacherId}>
+                {teacher.fullName} ({teacher.email})
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" style={buttonStyle}>Add Course</button>
       </form>
