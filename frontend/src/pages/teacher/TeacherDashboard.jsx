@@ -8,6 +8,8 @@ import { getUserFromToken } from '../../utils/auth';
 const TeacherDashboard = () => {
   const [teacher, setTeacher] = useState({ fullName: '', email: '' });
   const navigate = useNavigate();
+  const [courses, setCourses] = useState([]);
+
 
   useEffect(() => {
     const fetchTeacherProfile = async () => {
@@ -24,8 +26,17 @@ const TeacherDashboard = () => {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTeacher(response.data);//set the entire profile and not just the ID
+
+        // Fetch teacher's courses
+      const courseResponse = await axios.get(`https://localhost:7260/api/teacher/courses/${teacherId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCourses(courseResponse.data);
+
+
+
       } catch (error) {
-        console.error('Failed to fetch teacher profile:', error);
+        console.error('Failed to fetch teacher profile or courses:', error);
         
       }
     };
@@ -59,6 +70,19 @@ const TeacherDashboard = () => {
         <main className="teacher-dashboard">
           <h2 className="teacher-welcome-text">Welcome, {teacher.fullName}</h2>
 
+          <h3 style={{ marginTop: '20px' }}>My Courses:</h3>
+          <ul>
+            {courses.length > 0 ? (
+              courses.map((course) => (
+                <li key={course.courseId}>
+                  {course.title} ({course.credits} credits)
+                </li>
+              ))
+            ) : (
+              <p>No courses assigned yet.</p>
+            )}
+          </ul>
+          
           <div className="teacher-cards-container">
             <div className="teacher-card">
               <h3>Total Courses</h3>

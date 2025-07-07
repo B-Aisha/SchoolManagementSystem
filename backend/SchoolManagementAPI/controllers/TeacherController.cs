@@ -32,28 +32,48 @@ public class TeacherController : ControllerBase
         _roleManager = roleManager;
         _configuration = configuration;
     }
-    
+
     [HttpGet("profile/{teacherId}")]
-public async Task<IActionResult> GetTeacherProfileByTeacherId(string teacherId)
-{
-    var teacher = await _context.Teachers
-        .Include(t => t.ApplicationUser)
-        .FirstOrDefaultAsync(t => t.TeacherId == teacherId);
-
-    if (teacher == null)
-        return NotFound("Teacher profile not found.");
-
-    var profile = new TeacherProfileDto
+    public async Task<IActionResult> GetTeacherProfileByTeacherId(string teacherId)
     {
-        TeacherId = teacher.TeacherId,
-        FullName = teacher.FullName,
-        Email = teacher.ApplicationUser?.Email,
-        
-    };
+        var teacher = await _context.Teachers
+            .Include(t => t.ApplicationUser)
+            .FirstOrDefaultAsync(t => t.TeacherId == teacherId);
 
-    return Ok(profile);
+        if (teacher == null)
+            return NotFound("Teacher profile not found.");
+
+        var profile = new TeacherProfileDto
+        {
+            TeacherId = teacher.TeacherId,
+            FullName = teacher.FullName,
+            Email = teacher.ApplicationUser?.Email,
+
+        };
+
+        return Ok(profile);
+    }//end of get teacher profile controller
+
+    [HttpGet("courses/{teacherId}")]
+public async Task<IActionResult> GetCoursesByTeacher(string teacherId)
+{
+    var courses = await _context.Courses
+        .Where(c => c.TeacherId == teacherId)
+        .ToListAsync();
+
+    var courseDtos = courses.Select(c => new CourseDto
+    {
+        CourseId = c.CourseId,
+        Title = c.Title,
+        Credits = c.Credits,
+        TeacherId = c.TeacherId
+        
+    }).ToList();
+
+    return Ok(courseDtos);
 }
 
-    //end of get student profile controller
+
+
 
 }
