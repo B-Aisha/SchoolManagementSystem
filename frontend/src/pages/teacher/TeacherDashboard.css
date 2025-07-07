@@ -1,0 +1,99 @@
+/* Main container */
+.teacher-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.teacher-navbar {
+  background-color: #007bff;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teacher-navbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.teacher-logout-button {
+  background-color: white;
+  color: #007bff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.teacher-logout-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Main content area */
+.teacher-main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.teacher-sidebar {
+  width: 200px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+}
+
+.teacher-sidebar-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.teacher-sidebar-item {
+  margin-bottom: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  color: black;
+}
+
+.teacher-sidebar-item:hover {
+  text-decoration: underline;
+}
+
+/* Dashboard content */
+.teacher-dashboard {
+  flex: 1;
+  padding: 30px;
+}
+
+.teacher-welcome-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+/* Cards */
+.teacher-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.teacher-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.teacher-card-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}

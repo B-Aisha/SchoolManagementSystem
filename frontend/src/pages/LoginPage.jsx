@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await axios.post('https://localhost:7260/api/Users/login', formData);
-      const { token, role, studentId } = response.data;
+      const { token, role, studentId, teacherId } = response.data;
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
@@ -45,6 +45,9 @@ const Login = () => {
 
     if (studentId) {
       localStorage.setItem('studentId', studentId);
+    }
+    else if(teacherId) {
+  localStorage.setItem('teacherId', teacherId);
     }
 
 

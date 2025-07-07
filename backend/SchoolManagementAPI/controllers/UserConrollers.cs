@@ -129,6 +129,9 @@ namespace SchoolManagementAPI.controllers
 
              // 3. Fetch StudentId if role is Student
             string? studentId = null;
+
+            string? teacherId = null;
+
             if (role == "Student")
             {
                 var student = await _context.Students.FirstOrDefaultAsync(s => s.ApplicationUserID == user.Id);
@@ -138,12 +141,20 @@ namespace SchoolManagementAPI.controllers
                 }
             }
 
+            else if (role == "Teacher")
+            {
+                var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.ApplicationUserID == user.Id);
+                if (teacher != null)
+                    teacherId = teacher.TeacherId;
+            }
+
             // 4. Return all necessary data
-            return Ok(new 
+            return Ok(new
             {
                 token = tokenString,
                 role,
-                studentId
+                studentId,
+                teacherId
             });
         }//end of loggin logic
 
