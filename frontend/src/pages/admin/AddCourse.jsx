@@ -1,5 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const AddCourse = () => {
   const [course, setCourse] = useState({
@@ -7,6 +9,7 @@ const AddCourse = () => {
     credits: '',
     teacherId: ''
   });
+  const navigate = useNavigate();
 
   const [teachers, setTeachers] = useState([]);
 
@@ -42,7 +45,8 @@ const AddCourse = () => {
         },
       });
       setMessage('Course added successfully!');
-      setCourse({ title: '', credits: '', teacherId: '' }); // clear form
+      //setCourse({ title: '', credits: '', teacherId: '' }); // clear form
+      setTimeout(() => navigate('/admin/courses'), 1500);  // Redirect after 1.5 seconds
     } catch (error) {
       console.error('Error adding course:', error);
       setMessage('Failed to add course.');
