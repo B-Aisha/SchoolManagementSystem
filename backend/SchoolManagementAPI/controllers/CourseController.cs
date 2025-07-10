@@ -34,7 +34,7 @@ namespace SchoolManagementAPI.Controllers
                 Title = dto.Title,
                 Credits = dto.Credits,
                 TeacherId = dto.TeacherId,
-                
+
                 Year = dto.Year,
                 Semester = dto.Semester
             };
@@ -123,23 +123,25 @@ namespace SchoolManagementAPI.Controllers
             return Ok("Course assigned to student successfully.");
         }//end of enrollment controller
 
+        
         [HttpGet("{courseId}/enrolled-students")]
-public async Task<IActionResult> GetEnrolledStudents(string courseId)
-{
-    var enrolledStudents = await _context.Enrollments
-        .Where(e => e.CourseId == courseId)
-        .Include(e => e.Student)
-        .ThenInclude(s => s.ApplicationUser)
-        .Select(e => new
+        public async Task<IActionResult> GetEnrolledStudents(string courseId)
         {
-            StudentId = e.StudentId,
-            UserName = e.Student.ApplicationUser.UserName,
-            Email = e.Student.ApplicationUser.Email
-        })
-        .ToListAsync();
+            var enrolledStudents = await _context.Enrollments
+                .Where(e => e.CourseId == courseId)
+                .Include(e => e.Student)
+                .ThenInclude(s => s.ApplicationUser)
+                .Select(e => new
+                {
+                    StudentId = e.StudentId,
+                    FullName = e.Student.FullName,
+                    Email = e.Student.ApplicationUser.Email,
+                    
+                })
+                .ToListAsync();
 
-    return Ok(enrolledStudents);
-}
+            return Ok(enrolledStudents);
+        }//end of enrolled students controller
 
 
 

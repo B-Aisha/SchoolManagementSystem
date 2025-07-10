@@ -43,6 +43,7 @@ const TeacherCoursesPage = () => {
             <tr style={{ backgroundColor: '#f2f2f2' }}>
               <th style={thStyle}>Title</th>
               <th style={thStyle}>Credits</th>
+              <th style={thStyle}></th>
             </tr>
           </thead>
           <tbody>
