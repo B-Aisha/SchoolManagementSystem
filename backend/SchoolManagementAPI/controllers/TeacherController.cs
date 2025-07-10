@@ -55,23 +55,45 @@ public class TeacherController : ControllerBase
     }//end of get teacher profile controller
 
     [HttpGet("courses/{teacherId}")]
-public async Task<IActionResult> GetCoursesByTeacher(string teacherId)
-{
-    var courses = await _context.Courses
-        .Where(c => c.TeacherId == teacherId)
-        .ToListAsync();
-
-    var courseDtos = courses.Select(c => new CourseDto
+    public async Task<IActionResult> GetCoursesByTeacher(string teacherId)
     {
-        CourseId = c.CourseId,
-        Title = c.Title,
-        Credits = c.Credits,
-        TeacherId = c.TeacherId
-        
-    }).ToList();
+        var courses = await _context.Courses
+            .Where(c => c.TeacherId == teacherId)
+            .ToListAsync();
 
-    return Ok(courseDtos);
-}
+        var courseDtos = courses.Select(c => new CourseDto
+        {
+            CourseId = c.CourseId,
+            Title = c.Title,
+            Credits = c.Credits,
+            TeacherId = c.TeacherId
+
+        }).ToList();
+
+        return Ok(courseDtos);
+    }//end of get courses by teacher controller
+
+
+    [HttpGet("students-in-course/{courseId}")]
+    public async Task<IActionResult> GetStudentsByCourseId(string courseId)
+    {
+        var enrollments = await _context.Enrollments
+            .Include(e => e.Student)
+            .ThenInclude(s => s.ApplicationUser)
+            .Where(e => e.CourseId == courseId)
+            .ToListAsync();
+
+        var students = enrollments.Select(e => new 
+        {
+            e.Student.StudentId,
+            e.Student.FullName,
+            e.Student.AdmNo,
+            Email = e.Student.ApplicationUser?.Email
+        }).ToList();
+
+        return Ok(students);
+    }//end of get students by course id controller
+
 
 
 
