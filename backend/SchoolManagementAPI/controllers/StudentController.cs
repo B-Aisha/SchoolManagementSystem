@@ -59,6 +59,7 @@ public async Task<IActionResult> GetCoursesByStudentId(string studentId)
 {
     var enrollments = await _context.Enrollments
         .Include(e => e.Course)
+            .ThenInclude(c => c.Teacher)
         .Where(e => e.StudentId == studentId)
         .ToListAsync();
 
@@ -67,7 +68,9 @@ public async Task<IActionResult> GetCoursesByStudentId(string studentId)
         CourseId = e.Course?.CourseId,
         Title = e.Course?.Title,
         Credits = e.Course.Credits,
-        TeacherId = e.Course?.TeacherId
+        TeacherId = e.Course?.TeacherId,
+        TeacherName = e.Course?.Teacher?.FullName ?? "N/A" 
+
     }).ToList();
 
     return Ok(courses);
