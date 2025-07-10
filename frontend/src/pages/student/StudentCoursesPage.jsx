@@ -43,6 +43,7 @@ const StudentCoursesPage = () => {
             <tr style={{ backgroundColor: '#f2f2f2' }}>
               <th style={thStyle}>Course Title</th>
               <th style={thStyle}>Credits</th>
+              <th style={thStyle}>Teacher</th>
               
             </tr>
           </thead>
@@ -51,6 +52,7 @@ const StudentCoursesPage = () => {
               <tr key={course.courseId} style={{ borderBottom: '1px solid #ddd' }}>
                 <td style={tdStyle}>{course.title}</td>
                 <td style={tdStyle}>{course.credits}</td>
+                <td style={tdStyle}>{course.teacherName || 'N/A'}</td>
                 
               </tr>
             ))}
