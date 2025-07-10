@@ -17,6 +17,8 @@ namespace SchoolManagementAPI.data
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        
+
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } //might need to remove this
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -57,6 +59,12 @@ namespace SchoolManagementAPI.data
                 .HasMany(t => t.Courses)
                 .WithOne(c => c.Teacher)
                 .HasForeignKey(c => c.TeacherId);
+
+           
+
+           
+
+
 
             // One-to-Many: Student -> Attendances
             //modelBuilder.Entity<Student>()

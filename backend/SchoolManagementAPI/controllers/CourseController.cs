@@ -33,7 +33,10 @@ namespace SchoolManagementAPI.Controllers
                 CourseId = Guid.NewGuid().ToString(),
                 Title = dto.Title,
                 Credits = dto.Credits,
-                TeacherId = dto.TeacherId
+                TeacherId = dto.TeacherId,
+                
+                Year = dto.Year,
+                Semester = dto.Semester
             };
 
             _context.Courses.Add(course);

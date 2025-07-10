@@ -14,7 +14,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchStudentProfile = async () => {
       const token = localStorage.getItem('token');
-      const studentId = localStorage.getItem('studentId');  // 👈 Get studentId from localStorage
+      const studentId = localStorage.getItem('studentId');  // Get studentId from localStorage
 
       if (!studentId) {
         console.error('Student ID not found.');
@@ -44,7 +44,7 @@ const StudentDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('studentId');  // 👈 Clear studentId too
+    localStorage.removeItem('studentId');  // Clear studentId too
     navigate('/login');
   };
 
@@ -68,24 +68,14 @@ const StudentDashboard = () => {
         <main className="student-dashboard">
           <h2 className="student-welcome-text">Welcome, {student.fullName}</h2>
 
-          <h3 style={{ marginTop: '20px' }}>My Enrolled Courses:</h3>
-            <ul>
-              {courses.length > 0 ? (
-                courses.map(course => (
-                  <li key={course.courseId}>
-                    {course.title} ({course.credits} credits)
-                  </li>
-                ))
-              ) : (
-                <p>You are not enrolled in any courses yet.</p>
-              )}
-            </ul>
 
 
           <div className="student-cards-container">
-            <div className="student-card">
+            <div className="student-card"
+             onClick={() => navigate('/student/courses')}>
+             
               <h3>Total Courses</h3>
-              <p className="student-card-number">3</p>
+              <p className="student-card-number">{courses.length}</p>
             </div>
 
             <div className="student-card">

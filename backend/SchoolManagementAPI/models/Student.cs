@@ -20,6 +20,8 @@ namespace SchoolManagementAPI.models
 
         public ApplicationUser? ApplicationUser { get; set; }
 
+
+
         public string? ParentId { get; set; }
         public Parent? Parent { get; set; }
 

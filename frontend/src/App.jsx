@@ -28,6 +28,7 @@ import AddCourse from './pages/admin/AddCourse';
 import CourseList from './pages/admin/CourseList';
 import EditCourse from './pages/admin/EditCourse';
 import AssignStudentToCourse  from './pages/admin/AssignStudentToCourse';
+import StudentCoursesPage from './pages/student/StudentCoursesPage';
 
 const App = () => {
   return (
@@ -57,6 +58,8 @@ const App = () => {
       <Route path="/admin/courses" element={<CourseList />} />
       <Route path="/admin/edit-course/:id" element={<EditCourse />} />
       <Route path="/admin/assign-student/:courseId" element={<AssignStudentToCourse />} />
+      <Route path="/student/courses" element={<StudentCoursesPage />} />
+
 
 
 
