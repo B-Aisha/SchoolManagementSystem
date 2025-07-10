@@ -50,6 +50,14 @@ const TeacherCoursesPage = () => {
               <tr key={course.courseId} style={{ borderBottom: '1px solid #ddd' }}>
                 <td style={tdStyle}>{course.title}</td>
                 <td style={tdStyle}>{course.credits}</td>
+                <td style={tdStyle}>
+                  <button 
+                  style={{ padding: '5px 10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  onClick={() => navigate(`/teacher-course-students/${course.courseId}`)}>
+                  View Students
+                  </button>
+
+                </td>
               </tr>
             ))}
           </tbody>
