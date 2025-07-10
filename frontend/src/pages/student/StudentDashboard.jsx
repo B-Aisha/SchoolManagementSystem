@@ -66,7 +66,7 @@ const StudentDashboard = () => {
         </aside>
 
         <main className="student-dashboard">
-          <h2 className="student-welcome-text">Welcome, {student.fullName}</h2>
+          <h2 className="student-welcome-text">Welcome Back, {student.fullName}</h2>
 
 
 

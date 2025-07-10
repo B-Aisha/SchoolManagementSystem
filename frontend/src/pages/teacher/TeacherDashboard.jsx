@@ -33,8 +33,6 @@ const TeacherDashboard = () => {
       });
       setCourses(courseResponse.data);
 
-
-
       } catch (error) {
         console.error('Failed to fetch teacher profile or courses:', error);
         
@@ -46,8 +44,12 @@ const TeacherDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('teacherId');  // 👈 Clear teacherId too
+    localStorage.removeItem('teacherId');  //  Clear teacherId too
     navigate('/login');
+  };
+
+  const handleViewCourses = () => {
+    navigate('/teacher-courses');
   };
 
   return (
@@ -68,25 +70,12 @@ const TeacherDashboard = () => {
         </aside>
 
         <main className="teacher-dashboard">
-          <h2 className="teacher-welcome-text">Welcome, {teacher.fullName}</h2>
+          <h2 className="teacher-welcome-text">Welcome Back, {teacher.fullName}</h2>
 
-          <h3 style={{ marginTop: '20px' }}>My Courses:</h3>
-          <ul>
-            {courses.length > 0 ? (
-              courses.map((course) => (
-                <li key={course.courseId}>
-                  {course.title} ({course.credits} credits)
-                </li>
-              ))
-            ) : (
-              <p>No courses assigned yet.</p>
-            )}
-          </ul>
-          
           <div className="teacher-cards-container">
-            <div className="teacher-card">
+            <div className="teacher-card" onClick={handleViewCourses} style={{ cursor: 'pointer' }}>
               <h3>Total Courses</h3>
-              <p className="teacher-card-number">3</p>
+              <p className="teacher-card-number">{courses.length}</p>
             </div>
 
             <div className="teacher-card">
