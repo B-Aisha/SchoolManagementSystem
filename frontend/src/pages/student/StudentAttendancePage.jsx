@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StudentAttendancePage = () => {
   const [attendance, setAttendance] = useState([]);
+  const [groupedAttendance, setGroupedAttendance] = useState({});
   const studentId = localStorage.getItem('studentId');
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAttendance = async () => {
@@ -18,6 +19,7 @@ const StudentAttendancePage = () => {
           }
         );
         setAttendance(response.data);
+        groupByCourse(response.data);
       } catch (error) {
         console.error('Failed to fetch attendance:', error);
       }
@@ -26,31 +28,45 @@ const StudentAttendancePage = () => {
     fetchAttendance();
   }, [studentId]);
 
+  const groupByCourse = (records) => {
+    const grouped = records.reduce((acc, record) => {
+      if (!acc[record.courseTitle]) acc[record.courseTitle] = [];
+      acc[record.courseTitle].push(record);
+      return acc;
+    }, {});
+    setGroupedAttendance(grouped);
+  };
+
   return (
     <div style={{ padding: '40px', maxWidth: '900px', margin: '0 auto' }}>
       <h2 style={{ marginBottom: '20px' }}>My Attendance Records</h2>
 
-      {attendance.length === 0 ? (
+      {Object.keys(groupedAttendance).length === 0 ? (
         <p>No attendance records found.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead style={{ backgroundColor: '#f2f2f2' }}>
-            <tr>
-              <th style={thStyle}>Date</th>
-              <th style={thStyle}>Course</th>
-              <th style={thStyle}>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendance.map((record) => (
-              <tr key={record.attendanceId}>
-                <td style={tdStyle}>{new Date(record.date).toLocaleDateString()}</td>
-                <td style={tdStyle}>{record.courseTitle}</td>
-                <td style={tdStyle}>{record.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        Object.entries(groupedAttendance).map(([courseTitle, records]) => (
+          <div key={courseTitle} style={{ marginBottom: '40px' }}>
+            <h3 style={{ color: '#007bff', marginBottom: '10px' }}>{courseTitle}</h3>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead style={{ backgroundColor: '#f2f2f2' }}>
+                <tr>
+                  <th style={thStyle}>Date</th>
+                  <th style={thStyle}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {records.map((record) => (
+                  <tr key={record.attendanceId}>
+                    <td style={tdStyle}>
+                      {new Date(record.date).toLocaleDateString()}
+                    </td>
+                    <td style={tdStyle}>{record.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))
       )}
       <button
         onClick={() => navigate('/student-dashboard')}
@@ -84,3 +100,11 @@ const tdStyle = {
 };
 
 export default StudentAttendancePage;
+
+
+
+
+
+
+
+
