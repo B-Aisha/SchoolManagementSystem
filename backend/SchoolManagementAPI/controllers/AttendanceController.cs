@@ -84,6 +84,26 @@ public class AttendanceController : ControllerBase
         return Ok(attendanceRecords);
     }//end of view attendance controller
 
+    [HttpGet("student/{studentId}")]
+public async Task<IActionResult> GetAttendanceForStudent(string studentId)
+{
+    var records = await _context.Attendance
+        .Include(a => a.Course)
+        .Where(a => a.StudentId == studentId)
+        .Select(a => new
+        {
+            a.AttendanceId,
+            a.Date,
+            a.Status,
+            CourseTitle = a.Course.Title,
+            CourseId = a.Course.CourseId
+        })
+        .ToListAsync();
+
+    return Ok(records);
+}//end of get attendance for students controller
+
+
 
 
    

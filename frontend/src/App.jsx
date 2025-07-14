@@ -33,6 +33,8 @@ import TeacherCoursesPage from './pages/teacher/TeacherCoursesPage';
 import TeacherCourseStudents from './pages/teacher/TeacherCourseStudents';
 import MarkAttendance from './pages/teacher/MarkAttendance';
 import ViewAttendance from './pages/teacher/ViewAttendance';
+import EditAttendance from './pages/teacher/EditAttendance';
+import StudentAttendancePage from './pages/student/StudentAttendancePage';
 
 
 const App = () => {
@@ -68,6 +70,10 @@ const App = () => {
       <Route path="/teacher-course-students/:courseId" element={<TeacherCourseStudents />} />
       <Route path="/teacher/attendance/:courseId" element={<MarkAttendance />} />
       <Route path="/teacher/attendance/view/:courseId" element={<ViewAttendance />} />
+      <Route path="/teacher/attendance/edit/:courseId/:studentId/:date" element={<EditAttendance />} />
+      <Route path="/student/attendance" element={<StudentAttendancePage />} />
+
+
 
 
 

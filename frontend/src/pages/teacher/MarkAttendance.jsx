@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const MarkAttendance = () => {
   const { courseId } = useParams();
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // today's date
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -61,6 +63,20 @@ const MarkAttendance = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <button
+    onClick={() => navigate('/teacher-courses')}
+    style={{
+      marginBottom: '20px',
+      padding: '8px 14px',
+      backgroundColor: '#6c757d',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    ← Back to My Courses
+  </button>
       <h2>Mark Attendance for {date}</h2>
 
       <table className="custom-table">

@@ -83,9 +83,11 @@ const StudentDashboard = () => {
               <p className="student-card-number">A</p>
             </div>
 
-            <div className="student-card">
+            <div className="student-card"
+            onClick={() => navigate('/student/attendance')}>
+              
               <h3>Attendance</h3>
-              <p className="student-card-number">95%</p>
+              <p className="student-card-number"></p>
             </div>
           </div>
         </main>
