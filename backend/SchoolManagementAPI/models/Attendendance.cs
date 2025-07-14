@@ -23,6 +23,9 @@ namespace SchoolManagementAPI.models
         public Course? Course { get; set; }
 
         public DateTime Date { get; set; }
+
+         [Required]
+        public string? Status { get; set; }  // Present, Absent, Late
         
     }
 }

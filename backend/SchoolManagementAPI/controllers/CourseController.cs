@@ -123,7 +123,7 @@ namespace SchoolManagementAPI.Controllers
             return Ok("Course assigned to student successfully.");
         }//end of enrollment controller
 
-        
+
         [HttpGet("{courseId}/enrolled-students")]
         public async Task<IActionResult> GetEnrolledStudents(string courseId)
         {
@@ -136,12 +136,30 @@ namespace SchoolManagementAPI.Controllers
                     StudentId = e.StudentId,
                     FullName = e.Student.FullName,
                     Email = e.Student.ApplicationUser.Email,
-                    
+                    AdmNo = e.Student.AdmNo,
+
+
                 })
                 .ToListAsync();
 
             return Ok(enrolledStudents);
         }//end of enrolled students controller
+
+        [HttpDelete("{courseId}/remove-student/{studentId}")]
+        public async Task<IActionResult> RemoveStudentFromCourse(string courseId, string studentId)
+        {
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.CourseId == courseId && e.StudentId == studentId);
+
+            if (enrollment == null)
+                return NotFound("Enrollment not found");
+
+            _context.Enrollments.Remove(enrollment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Student removed from course" });
+        }//end of remove user controller
+
 
 
 
