@@ -63,6 +63,28 @@ public class AttendanceController : ControllerBase
         return Ok("Attendance marked successfully.");
     }//end of submit attendance controller
 
+    [HttpGet("view/{courseId}/{date}")]
+    public async Task<IActionResult> ViewAttendance(string courseId, DateTime date)
+    {
+        var attendanceRecords = await _context.Attendance
+            .Include(a => a.Student)
+            .ThenInclude(s => s.ApplicationUser)
+            .Where(a => a.CourseId == courseId && a.Date.Date == date.Date)
+            .Select(a => new
+            {
+                a.StudentId,
+                a.CourseId,
+                a.Date,
+                a.Status,
+                FullName = a.Student.FullName,
+                AdmNo = a.Student.AdmNo
+            })
+            .ToListAsync();
+
+        return Ok(attendanceRecords);
+    }//end of view attendance controller
+
+
 
    
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 const TeacherCoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -43,7 +45,9 @@ const TeacherCoursesPage = () => {
             <tr style={{ backgroundColor: '#f2f2f2' }}>
               <th style={thStyle}>Title</th>
               <th style={thStyle}>Credits</th>
-              <th style={thStyle}></th>
+              <th style={thStyle}>View Students</th>
+              <th style={thStyle}>Mark Attendance</th>
+              <th style={thStyle}>View Attendance</th>
             </tr>
           </thead>
           <tbody>
@@ -57,8 +61,36 @@ const TeacherCoursesPage = () => {
                   onClick={() => navigate(`/teacher-course-students/${course.courseId}`)}>
                   View Students
                   </button>
-
                 </td>
+                <td style={tdStyle}>
+                  <Link
+                to={`/teacher/attendance/${course.courseId}`}
+                style={{
+                  backgroundColor: '#ffc107',
+                  color: 'white',
+                  padding: '6px 12px',
+                  borderRadius: '4px',
+                  textDecoration: 'none'
+                }}
+              >
+                Mark Attendance
+              </Link>
+                </td>
+
+                <td style={tdStyle}>
+                <Link
+                  to={`/teacher/attendance/view/${course.courseId}`}
+                  style={{
+                    backgroundColor: '#17a2b8',
+                    color: 'white',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  View Attendance
+                </Link>
+              </td>
               </tr>
             ))}
           </tbody>
