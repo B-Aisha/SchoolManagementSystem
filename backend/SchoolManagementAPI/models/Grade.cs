@@ -14,7 +14,10 @@ public class Grade
     public string? CourseId { get; set; }
     public Course? Course { get; set; }
 
-    public char Value { get; set; }
+     public double CatMarks { get; set; }
+    public double ExamMarks { get; set; }
+    public double Total => CatMarks + ExamMarks;
+    public string? GradeLetter { get; set; }
     public DateTime DateAwarded { get; set; }
 }
 }

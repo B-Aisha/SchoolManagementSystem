@@ -35,6 +35,7 @@ import MarkAttendance from './pages/teacher/MarkAttendance';
 import ViewAttendance from './pages/teacher/ViewAttendance';
 import EditAttendance from './pages/teacher/EditAttendance';
 import StudentAttendancePage from './pages/student/StudentAttendancePage';
+import AssignGradesPage from './pages/teacher/AssignGradesPage';
 
 
 const App = () => {
@@ -72,6 +73,7 @@ const App = () => {
       <Route path="/teacher/attendance/view/:courseId" element={<ViewAttendance />} />
       <Route path="/teacher/attendance/edit/:courseId/:studentId/:date" element={<EditAttendance />} />
       <Route path="/student/attendance" element={<StudentAttendancePage />} />
+      <Route path="/teacher/assign-grades/:courseId" element={<AssignGradesPage />} />
 
 
 

@@ -78,9 +78,10 @@ const TeacherDashboard = () => {
               <p className="teacher-card-number">{courses.length}</p>
             </div>
 
-            <div className="teacher-card">
+            <div className="teacher-card"
+            onClick={() => navigate('/teacher/assign-grades/:courseId')}>
               <h3>Assign Grades</h3>
-              <p className="teacher-card-number">A</p>
+              
             </div>
 
             <div className="teacher-card">
