@@ -72,24 +72,47 @@ namespace SchoolManagementAPI.Controllers
             else if (total >= 40) return "D";
             else return "F";
         } // Helper to determine grade based on total marks
-    
-    [HttpGet("course/{courseId}/students")]
-    public async Task<IActionResult> GetStudentsForGrading(string courseId)
+
+        [HttpGet("course/{courseId}/students")]
+        public async Task<IActionResult> GetStudentsForGrading(string courseId)
+        {
+            var students = await _context.Enrollments
+                .Where(e => e.CourseId == courseId)
+                .Include(e => e.Student)
+                .ThenInclude(s => s.ApplicationUser)
+                .Select(e => new
+                {
+                    e.StudentId,
+                    FullName = e.Student.FullName,
+                    AdmNo = e.Student.AdmNo
+                })
+                .ToListAsync();
+
+            return Ok(students);
+        }//end of get student for grading controller
+
+    [HttpGet("course/{courseId}/grades")]
+    public async Task<IActionResult> GetGradesForCourse(string courseId)
     {
-        var students = await _context.Enrollments
-            .Where(e => e.CourseId == courseId)
-            .Include(e => e.Student)
+        var grades = await _context.Grades
+            .Where(g => g.CourseId == courseId)
+            .Include(g => g.Student)
             .ThenInclude(s => s.ApplicationUser)
-            .Select(e => new
+            .Select(g => new
             {
-                e.StudentId,
-                FullName = e.Student.FullName,
-                AdmNo = e.Student.AdmNo
+                g.StudentId,
+                FullName = g.Student.FullName,
+                AdmNo = g.Student.AdmNo,
+                g.CatMarks,
+                g.ExamMarks,
+                Total = g.CatMarks + g.ExamMarks,
+                g.GradeLetter
             })
             .ToListAsync();
 
-        return Ok(students);
-    }//
+        return Ok(grades);
+    }//end of get grades for courses controller
+
 
 
     }
