@@ -79,15 +79,14 @@ const TeacherDashboard = () => {
             </div>
 
             <div className="teacher-card"
-            onClick={() => navigate('/teacher/assign-grades/:courseId')}>
-              <h3>Assign Grades</h3>
+            onClick={() => navigate('/teacher/view-grades')}>
+              <h3>Assign Grades
+                <p>📊</p>
+              </h3>
               
             </div>
 
-            <div className="teacher-card">
-              <h3>Attendance</h3>
-              <p className="teacher-card-number">95%</p>
-            </div>
+            
           </div>
         </main>
       </div>

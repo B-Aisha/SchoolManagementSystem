@@ -14,7 +14,7 @@ namespace SchoolManagementAPI.models
     public class Attendance
     {
         [Key]
-        public string? AttendanceId { get; set; }
+        public string? AttendanceId { get; set; } 
 
         public string? StudentId { get; set; }
         public Student? Student { get; set; }

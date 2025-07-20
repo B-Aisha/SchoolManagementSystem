@@ -255,11 +255,11 @@ namespace SchoolManagementAPI.Migrations
                     b.Property<string>("CourseId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AttendanceId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("AttendanceId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -268,7 +268,7 @@ namespace SchoolManagementAPI.Migrations
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("StudentId", "CourseId");
+                    b.HasKey("StudentId", "CourseId", "Date");
 
                     b.HasIndex("CourseId");
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './StudentDashboard.css';
 import { getUserFromToken } from '../../utils/auth';
+import { Link } from 'react-router-dom';
 
 
 const StudentDashboard = () => {
@@ -58,10 +59,10 @@ const StudentDashboard = () => {
       <div className="student-main-content">
         <aside className="student-sidebar">
           <ul className="student-sidebar-list">
-            <li className="student-sidebar-item">Dashboard</li>
-            <li className="student-sidebar-item">My Courses</li>
-            <li className="student-sidebar-item">Grades</li>
-            <li className="student-sidebar-item">Attendance</li>
+            <li className="student-sidebar-item"><Link to="/student-dashboard"></Link>Dashboard</li>
+            <li className="student-sidebar-item"><Link to="/student/courses"></Link>My Courses</li>
+            <li className="student-sidebar-item"><Link to="/student/grades"></Link>Grades</li>
+            <li className="student-sidebar-item"><Link to="/student/attendance"></Link>Attendance</li>
           </ul>
         </aside>
 
@@ -78,9 +79,10 @@ const StudentDashboard = () => {
               <p className="student-card-number">{courses.length}</p>
             </div>
 
-            <div className="student-card">
+            <div className="student-card"
+            onClick={() => navigate('/student/grades')}>
               <h3>Recent Grades</h3>
-              <p className="student-card-number">A</p>
+              <p className="student-card-number">📊</p>
             </div>
 
             <div className="student-card"

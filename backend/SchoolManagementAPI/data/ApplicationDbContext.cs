@@ -30,7 +30,7 @@ namespace SchoolManagementAPI.data
                 .HasKey(e => new { e.StudentId, e.CourseId });
 
             modelBuilder.Entity<Attendance>()
-                .HasKey(e => new { e.StudentId, e.CourseId });
+                .HasKey(e => new { e.StudentId, e.CourseId, });
 
             // add fluent API configs if needed
             // One-to-One: ApplicationUser <-> Student

@@ -91,27 +91,77 @@ namespace SchoolManagementAPI.Controllers
             return Ok(students);
         }//end of get student for grading controller
 
-    [HttpGet("course/{courseId}/grades")]
-    public async Task<IActionResult> GetGradesForCourse(string courseId)
-    {
-        var grades = await _context.Grades
-            .Where(g => g.CourseId == courseId)
-            .Include(g => g.Student)
-            .ThenInclude(s => s.ApplicationUser)
-            .Select(g => new
-            {
-                g.StudentId,
-                FullName = g.Student.FullName,
-                AdmNo = g.Student.AdmNo,
-                g.CatMarks,
-                g.ExamMarks,
-                Total = g.CatMarks + g.ExamMarks,
-                g.GradeLetter
-            })
-            .ToListAsync();
+        [HttpGet("course/{courseId}/grades")]
+        public async Task<IActionResult> GetGradesForCourse(string courseId)
+        {
+            var grades = await _context.Grades
+                .Where(g => g.CourseId == courseId)
+                .Include(g => g.Student)
+                .ThenInclude(s => s.ApplicationUser)
+                .Select(g => new
+                {
+                    g.StudentId,
+                    FullName = g.Student.FullName,
+                    AdmNo = g.Student.AdmNo,
+                    g.CatMarks,
+                    g.ExamMarks,
+                    Total = g.CatMarks + g.ExamMarks,
+                    g.GradeLetter
+                })
+                .ToListAsync();
 
-        return Ok(grades);
-    }//end of get grades for courses controller
+            return Ok(grades);
+        }//end of get grades for courses controller
+
+        [HttpGet("teacher/{teacherId}")]
+        public async Task<IActionResult> GetGradesByTeacher(string teacherId)
+        {
+            var grades = await _context.Grades
+                .Include(g => g.Course)
+                .Include(g => g.Student)
+                    .ThenInclude(s => s.ApplicationUser)
+                .Where(g => g.Course.TeacherId == teacherId)
+                .Select(g => new
+                {
+                    g.CourseId,
+                    CourseTitle = g.Course.Title,
+                    g.StudentId,
+                    AdmNo = g.Student.AdmNo,
+                    FullName = g.Student.FullName,
+                    g.CatMarks,
+                    g.ExamMarks,
+                    Total = g.CatMarks + g.ExamMarks,
+                    g.GradeLetter
+                })
+                .ToListAsync();
+
+            return Ok(grades);
+        }//get gardes by teacher controller
+
+    [HttpGet("student/{studentId}")]
+public async Task<IActionResult> GetGradesByStudent(string studentId)
+{
+    var grades = await _context.Grades
+        .Include(g => g.Course)
+        .Where(g => g.StudentId == studentId) // StudentId is a string
+        .Select(g => new
+        {
+            g.StudentId,
+            g.CatMarks,
+            g.ExamMarks,
+            g.Total,
+            g.GradeLetter,
+            CourseTitle = g.Course.Title
+        })
+        .ToListAsync();
+
+    if (grades == null || grades.Count == 0)
+        return NotFound("No grades found for this student.");
+
+    return Ok(grades);
+}
+
+
 
 
 
