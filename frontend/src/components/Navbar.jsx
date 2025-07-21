@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    alert("Redirecting to login...");
+    
     navigate('/login'); // enable later when login page exists
   };
 
