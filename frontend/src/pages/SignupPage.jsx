@@ -24,24 +24,39 @@ const SignupPage = () => {
   };
 
   const handleSignup = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setMessage(''); // Clear previous message
 
-    try {
-      const response = await fetch("https://localhost:7260/api/Users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
+  try {
+    const response = await fetch("https://localhost:7260/api/Users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
 
-      const text = await response.text();
-      setMessage(text);
-    } catch (error) {
-      console.error(error);
-      setMessage("Something went wrong!");
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      if (errorData.errors) {
+        // Display each validation error as a list
+        setMessage(errorData.errors.join("\n"));
+      } else if (typeof errorData === 'string') {
+        setMessage(errorData);
+      } else {
+        setMessage("Registration failed.");
+      }
+    } else {
+      const successMsg = await response.text();
+      setMessage(successMsg);
     }
-  };
+
+  } catch (error) {
+    console.error(error);
+    setMessage("Something went wrong!");
+  }
+};
 
   return (
     <div className="auth-container">
@@ -111,7 +126,12 @@ const SignupPage = () => {
         <button className="button" type="submit">Sign Up</button>
       </form>
 
-      <p>{message}</p>
+      {message && (
+      <div style={{ color: 'red', marginTop: '10px', whiteSpace: 'pre-line' }}>
+        {message}
+      </div>
+    )}
+
 
       <div className="auth-links">
         <p>Already have an account? <Link to="/login">Login</Link></p>
