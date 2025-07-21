@@ -97,21 +97,27 @@ namespace SchoolManagementAPI.controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user == null)
             {
-                return Unauthorized("Invalid email or password.");
+                return Unauthorized(new { error = "Email not found." });
             }
 
-            // 1. Get the user's role
+            if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                return Unauthorized(new { error = "Incorrect password." });
+            }
+
+            // get user's role
+            
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault() ?? "User";
 
-            // 2. Generate JWT Claims
+            //generate JWT claims
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, role),
-                new Claim("id", user.Id)  // Add User Id as claim
+                new Claim("id", user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
@@ -127,20 +133,16 @@ namespace SchoolManagementAPI.controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-             // 3. Fetch StudentId if role is Student
+            //fetch studentid and teacherid in 
             string? studentId = null;
-
             string? teacherId = null;
 
             if (role == "Student")
             {
                 var student = await _context.Students.FirstOrDefaultAsync(s => s.ApplicationUserID == user.Id);
                 if (student != null)
-                {
                     studentId = student.StudentId;
-                }
             }
-
             else if (role == "Teacher")
             {
                 var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.ApplicationUserID == user.Id);
@@ -148,7 +150,6 @@ namespace SchoolManagementAPI.controllers
                     teacherId = teacher.TeacherId;
             }
 
-            // 4. Return all necessary data
             return Ok(new
             {
                 token = tokenString,
@@ -156,7 +157,8 @@ namespace SchoolManagementAPI.controllers
                 studentId,
                 teacherId
             });
-        }//end of loggin logic
+        }
+//end of loggin logic
 
 
     }
