@@ -61,7 +61,11 @@ const Login = () => {
       setSuccess('Login successful!');
       // Redirect or navigate to dashboard here
     } catch (err) {
-      setError('Login failed. Please check your credentials.');
+      if (err.response && err.response.data && err.response.data.error) {
+    setError(err.response.data.error); // Specific error from backend
+  } else {
+    setError('Something went wrong. Please try again.');
+  }
       console.error(err);
     }
   };
