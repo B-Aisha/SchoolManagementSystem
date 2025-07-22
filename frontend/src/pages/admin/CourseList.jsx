@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './admin.css'; // reuse your existing table styles
-import { Link } from 'react-router-dom'; 
+import './admin.css';
+import { Link } from 'react-router-dom';
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -22,42 +23,62 @@ const CourseList = () => {
     };
 
     fetchCourses();
-    }, []);
-    const handleDelete = async (id) => {
+  }, []);
+
+  const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
 
     try {
-        const token = localStorage.getItem('token');
-        await axios.delete(`https://localhost:7260/api/course/delete/${id}`, {
+      const token = localStorage.getItem('token');
+      await axios.delete(`https://localhost:7260/api/course/delete/${id}`, {
         headers: {
-            Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
-        });
-        setCourses(prev => prev.filter(course => course.courseId !== id));
+      });
+      setCourses(prev => prev.filter(course => course.courseId !== id));
     } catch (error) {
-        console.error("Error deleting course:", error);
+      console.error("Error deleting course:", error);
     }
-    };
+  };
 
+  // 🔍 Filter courses by title
+  const filteredCourses = courses.filter(course =>
+    course.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="table-container">
       <div>
         <h2 className="table-heading">All Courses</h2>
 
-        <div style={{ marginBottom: '20px', textAlign: 'right' }}>
-                  <Link
-                   to="/admin/add-course"
-                  style={{
-                  backgroundColor: '#28a745',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '4px',
-                  textDecoration: 'none',
-                  fontWeight: 'bold'
-                    }}>+ Add Course
-                   </Link>
-                </div>
+       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}> 
+        <input
+          type="text"
+          placeholder="Search by course title"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            padding: '8px',
+            width: '250',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontSize: '16px',
+          }}
+        />
+
+        
+          <Link
+            to="/admin/add-course"
+            style={{
+              backgroundColor: '#28a745',
+              color: 'white',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              fontWeight: 'bold'
+            }}>+ Add Course
+          </Link>
+        </div>
 
         <table className="custom-table">
           <thead>
@@ -67,45 +88,52 @@ const CourseList = () => {
               <th>Credits</th>
               <th>Teacher Name</th>
               <th>Edit</th>
+              <th>Assign Student</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
-            {courses.map(course => (
+            {filteredCourses.map(course => (
               <tr key={course.courseId}>
                 <td>{course.courseId}</td>
                 <td>{course.title}</td>
                 <td>{course.credits}</td>
                 <td>{course.teacherName || 'Unassigned'}</td>
-                <td><Link
-                to={`/admin/edit-course/${course.courseId}`}
-                style={{
-                backgroundColor: '#007bff',
-                color: 'white',
-                padding: '6px 12px',
-                borderRadius: '4px',
-                textDecoration: 'none'
-                }}>Edit </Link></td>               
-                <td><Link
-                to={`/admin/assign-student/${course.courseId}`}
-                style={{
-                  backgroundColor: '#28a745',
-                  color: 'white',
-                  padding: '6px 12px',
-                  borderRadius: '4px',
-                  textDecoration: 'none',
-                  display: 'inline-block'
-                }}>Assign Student</Link></td>
-                <td><button
-                onClick={() => handleDelete(course.courseId)}
-                style={{
-                backgroundColor: '#dc3545',
-                color: 'white',
-                padding: '6px 12px',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-                }} >Delete </button></td>
-
+                <td>
+                  <Link
+                    to={`/admin/edit-course/${course.courseId}`}
+                    style={{
+                      backgroundColor: '#007bff',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '4px',
+                      textDecoration: 'none'
+                    }}>Edit</Link>
+                </td>
+                <td>
+                  <Link
+                    to={`/admin/assign-student/${course.courseId}`}
+                    style={{
+                      backgroundColor: '#28a745',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '4px',
+                      textDecoration: 'none',
+                      display: 'inline-block'
+                    }}>Assign Student</Link>
+                </td>
+                <td>
+                  <button
+                    onClick={() => handleDelete(course.courseId)}
+                    style={{
+                      backgroundColor: '#dc3545',
+                      color: 'white',
+                      padding: '6px 12px',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
