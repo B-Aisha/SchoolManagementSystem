@@ -51,7 +51,7 @@ namespace SchoolManagementAPI.controllers
             {
                 UserName = model.UserName,
                 Email = model.Email,
-                Role = model.Role,
+                
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PhoneNumber = model.PhoneNumber,
@@ -66,27 +66,9 @@ namespace SchoolManagementAPI.controllers
                 return BadRequest(new { Errors = errors });
             }
 
-            // ✅ Assign role if provided
-            if (!string.IsNullOrEmpty(model.Role))
-            {
-                await _userManager.AddToRoleAsync(user, model.Role);
-            }
 
-             // ✅ If role is Student, create a Student profile
-        if (model.Role.Equals("Student", StringComparison.OrdinalIgnoreCase))
-        {
-            var student = new Student
-            {
-                StudentId = Guid.NewGuid().ToString(),
-                ApplicationUserID = user.Id,
-                
-            };
 
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-        }
-
-            return Ok("User registered successfully.");
+            return Ok(new {message = "User registered successfully."});
         }
 
 
@@ -107,10 +89,17 @@ namespace SchoolManagementAPI.controllers
                 return Unauthorized(new { error = "Incorrect password." });
             }
 
-            // get user's role
+           
             
-            var roles = await _userManager.GetRolesAsync(user);
-            var role = roles.FirstOrDefault() ?? "User";
+             // CHECK if user has been assigned a role
+    var roles = await _userManager.GetRolesAsync(user);
+    if (roles == null || !roles.Any())
+    {
+        return Unauthorized(new { error = "Your account has not been assigned a role yet. Please contact the administrator." });
+    }
+
+    var role = roles.FirstOrDefault() ?? "User";
+           
 
             //generate JWT claims
             var claims = new[]

@@ -61,13 +61,16 @@ const Login = () => {
       setSuccess('Login successful!');
       // Redirect or navigate to dashboard here
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.error) {
-    setError(err.response.data.error); // Specific error from backend
+  if (err.response?.data?.error === "Your account has not been assigned a role yet. Please contact the administrator.") {
+    navigate("/pending-approval");
+  } else if (err.response && err.response.data && err.response.data.error) {
+    setError(err.response.data.error); // Specific backend error (e.g. incorrect password)
   } else {
     setError('Something went wrong. Please try again.');
   }
-      console.error(err);
-    }
+  console.error(err);
+}
+
   };
 
   return (

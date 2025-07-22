@@ -11,7 +11,7 @@ const SignupPage = () => {
     PhoneNumber: '',
     Email: '',
     Password: '',
-    Role: '',
+    
   });
 
   const [message, setMessage] = useState('');
@@ -48,8 +48,8 @@ const SignupPage = () => {
         setMessage("Registration failed.");
       }
     } else {
-      const successMsg = await response.text();
-      setMessage(successMsg);
+      const successData = await response.json();
+      setMessage(successData.message);
     }
 
   } catch (error) {
@@ -111,26 +111,21 @@ const SignupPage = () => {
           required
         />
         
-        <select
-          name="Role"
-          value={formData.Role}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Role</option>
-          <option value="Student">Student</option>
-          <option value="Teacher">Teacher</option>
-          <option value="Parent">Parent</option>
-          <option value="Admin">Admin</option>
-        </select>
+       
         <button className="button" type="submit">Sign Up</button>
       </form>
 
       {message && (
-      <div style={{ color: 'red', marginTop: '10px', whiteSpace: 'pre-line' }}>
-        {message}
-      </div>
-    )}
+  <div
+    style={{
+      color: message.toLowerCase().includes("success") ? 'green' : 'red',
+      marginTop: '10px',
+      whiteSpace: 'pre-line',
+    }}
+  >
+    {message}
+  </div>
+)}
 
 
       <div className="auth-links">
