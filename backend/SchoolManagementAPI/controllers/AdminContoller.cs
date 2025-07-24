@@ -203,6 +203,12 @@ public class AdminController : ControllerBase
             _context.Teachers.Remove(existingTeacher);
         }
 
+        var existingParent = await _context.Parents.FirstOrDefaultAsync(p => p.ApplicationUserID == user.Id);
+        if (existingParent != null)
+        {
+            _context.Parents.Remove(existingParent);
+        }
+
         await _context.SaveChangesAsync();  // Save deletion of old records
 
         //  Add to new custom table based on role
@@ -214,6 +220,11 @@ public class AdminController : ControllerBase
         {
             await CreateTeacherProfile(user);
         }
+        else if (model.Role == "Parent")
+        {
+            await CreateParentProfile(user);
+        }
+        
 
 
         return Ok("Role assigned successfully");
@@ -256,6 +267,27 @@ public class AdminController : ControllerBase
             await _context.SaveChangesAsync();
         }
     }
+
+
+     private async Task CreateParentProfile(ApplicationUser user)
+    {
+        var exists = await _context.Parents.AnyAsync(p => p.ApplicationUserID == user.Id);
+        if (!exists)
+        {
+            var parent = new Parent
+            {
+                ParentId = Guid.NewGuid().ToString(),
+                ApplicationUserID = user.Id,
+                FullName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                
+
+            };
+            _context.Parents.Add(parent);
+            await _context.SaveChangesAsync();
+        }
+    }
+
 
     [HttpGet("all-students")]
     public async Task<IActionResult> GetAllCustomStudents()
