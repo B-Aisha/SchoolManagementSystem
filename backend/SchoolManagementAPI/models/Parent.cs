@@ -21,6 +21,6 @@ namespace SchoolManagementAPI.models
         public ApplicationUser? ApplicationUser { get; set; }
 
         // Relationships
-        public ICollection<Student> Children { get; set; } = new List<Student>();
+        public ICollection<Student> Students { get; set; } = new List<Student>();
     }
 }
