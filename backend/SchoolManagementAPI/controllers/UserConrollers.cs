@@ -89,17 +89,17 @@ namespace SchoolManagementAPI.controllers
                 return Unauthorized(new { error = "Incorrect password." });
             }
 
-           
-            
-             // CHECK if user has been assigned a role
-    var roles = await _userManager.GetRolesAsync(user);
-    if (roles == null || !roles.Any())
-    {
-        return Unauthorized(new { error = "Your account has not been assigned a role yet. Please contact the administrator." });
-    }
 
-    var role = roles.FirstOrDefault() ?? "User";
-           
+
+            // CHECK if user has been assigned a role
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles == null || !roles.Any())
+            {
+                return Unauthorized(new { error = "Your account has not been assigned a role yet. Please contact the administrator." });
+            }
+
+            var role = roles.FirstOrDefault() ?? "User";
+
 
             //generate JWT claims
             var claims = new[]
@@ -125,6 +125,7 @@ namespace SchoolManagementAPI.controllers
             //fetch studentid and teacherid in 
             string? studentId = null;
             string? teacherId = null;
+            string? parentId = null;
 
             if (role == "Student")
             {
@@ -138,13 +139,21 @@ namespace SchoolManagementAPI.controllers
                 if (teacher != null)
                     teacherId = teacher.TeacherId;
             }
+            else if (role == "Parent")
+            {
+                var parent = await _context.Parents.FirstOrDefaultAsync(p => p.ApplicationUserID == user.Id);
+                if (parent != null)
+                    parentId = parent.ParentId;
+            }
+
 
             return Ok(new
             {
                 token = tokenString,
                 role,
                 studentId,
-                teacherId
+                teacherId,
+                parentId
             });
         }
 //end of loggin logic

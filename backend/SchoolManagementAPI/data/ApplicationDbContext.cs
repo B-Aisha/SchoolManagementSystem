@@ -29,8 +29,7 @@ namespace SchoolManagementAPI.data
             modelBuilder.Entity<Enrollment>()
                 .HasKey(e => new { e.StudentId, e.CourseId });
 
-            modelBuilder.Entity<Attendance>()
-                .HasKey(e => new { e.StudentId, e.CourseId, });
+            
 
             // add fluent API configs if needed
             // One-to-One: ApplicationUser <-> Student
@@ -51,7 +50,7 @@ namespace SchoolManagementAPI.data
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(a => a.Parent)
                 .WithOne(p => p.ApplicationUser)
-                .HasForeignKey<Parent>(p => p.ApplicationUserId)
+                .HasForeignKey<Parent>(p => p.ApplicationUserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-Many: Teacher -> Courses

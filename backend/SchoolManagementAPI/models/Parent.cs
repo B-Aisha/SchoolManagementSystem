@@ -14,12 +14,11 @@ namespace SchoolManagementAPI.models
         public int Email { get; set; }
 
 
-        //[Required]
-        public string? ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUser")]
 
-        //[ForeignKey("UserId")]
+         public string? ApplicationUserID { get; set; }
+
         public ApplicationUser? ApplicationUser { get; set; }
-
 
         // Relationships
         public ICollection<Student> Children { get; set; } = new List<Student>();
