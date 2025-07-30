@@ -39,6 +39,7 @@ import AssignGradesPage from './pages/teacher/AssignGradesPage';
 import ViewGradesPage from './pages/teacher/ViewGradesPage';
 import StudentViewGrades from './pages/student/StudentViewGrades';
 import PendingApproval from './pages/PendingApproval';
+import  AssignParentToStudent  from './pages/admin/AssignParentToStudent';
 
 
 const App = () => {
@@ -79,15 +80,8 @@ const App = () => {
       <Route path="/teacher/assign-grades" element={<AssignGradesPage />} />
       <Route path="/teacher/view-grades" element={<ViewGradesPage />} />
       <Route path="/student/grades" element={<StudentViewGrades/>} />
-      <Route path="/pending-approval" element={<PendingApproval />} /> 
-
-
-
-
-
-
-
-
+      <Route path="/pending-approval" element={<PendingApproval />} />
+      <Route path="/admin/assign-parent" element={<AssignParentToStudent/>} /> 
 
 
     </Routes>

@@ -109,6 +109,8 @@ public class AdminController : ControllerBase
         foreach (var user in usersInRole)
         {
             var roles = await _userManager.GetRolesAsync(user);
+
+
             userList.Add(new UserWithRoleDto
             {
                 Id = user.Id,
@@ -117,6 +119,7 @@ public class AdminController : ControllerBase
                 PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList()
             });
+            
         }
 
         return Ok(userList);
@@ -224,7 +227,7 @@ public class AdminController : ControllerBase
         {
             await CreateParentProfile(user);
         }
-        
+
 
 
         return Ok("Role assigned successfully");
@@ -269,7 +272,7 @@ public class AdminController : ControllerBase
     }
 
 
-     private async Task CreateParentProfile(ApplicationUser user)
+    private async Task CreateParentProfile(ApplicationUser user)
     {
         var exists = await _context.Parents.AnyAsync(p => p.ApplicationUserID == user.Id);
         if (!exists)
@@ -280,7 +283,7 @@ public class AdminController : ControllerBase
                 ApplicationUserID = user.Id,
                 FullName = $"{user.FirstName} {user.LastName}",
                 Email = user.Email,
-                
+
 
             };
             _context.Parents.Add(parent);
@@ -322,8 +325,41 @@ public class AdminController : ControllerBase
             .ToListAsync();
 
         return Ok(teachers);
-    }
-//end of get all techers controller
+    }//end of get all techers controller
+
+     [HttpGet("all-parents")]
+    public async Task<IActionResult> GetAllCustomPaents()
+    {
+        var parents = await _context.Parents
+            .Include(p => p.ApplicationUser)
+            .Select(p => new ParentWithUserDto
+            {
+                ParentId = p.ParentId,
+                UserName = p.ApplicationUser.UserName,
+                FullName = p.FullName,
+                Email = p.ApplicationUser.Email,
+                ApplicationUserId = p.ApplicationUserID
+            })
+            .ToListAsync();
+
+        return Ok(parents);
+    }//end of get all parents controller
+    
+    [HttpPost("assign-parent")]
+    public async Task<IActionResult> AssignParentToStudent([FromBody] AssignParentToStudentDto dto)
+    {
+        var student = await _context.Students.FindAsync(dto.StudentId);
+        if (student == null) return NotFound("Student not found.");
+
+        var parent = await _context.Parents.FindAsync(dto.ParentId);
+        if (parent == null) return NotFound("Parent not found.");
+
+        student.ParentId = dto.ParentId;
+        await _context.SaveChangesAsync();
+
+        return Ok("Parent assigned to student successfully.");
+    }//assign parent to student controller
+
 
 
 
