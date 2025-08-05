@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './admin.css'; // ✅ Ensure this path is correct
+import './admin.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const AssignParentToStudent = () => {
   const [students, setStudents] = useState([]);
@@ -12,6 +14,8 @@ const AssignParentToStudent = () => {
   const [message, setMessage] = useState('');
   const [studentSearch, setStudentSearch] = useState('');
   const [parentSearch, setParentSearch] = useState('');
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -51,6 +55,11 @@ const AssignParentToStudent = () => {
       });
 
       setMessage('✅ Parent successfully assigned to student.');
+      // Delay navigation by 3 seconds
+    setTimeout(() => {
+      navigate('/admin/parent-student-list');
+    }, 3000);
+
     } catch (error) {
       console.error('Assignment failed:', error);
       setMessage('❌ Failed to assign parent.');
@@ -161,7 +170,7 @@ const AssignParentToStudent = () => {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div>y
         </div>
 
         <button
