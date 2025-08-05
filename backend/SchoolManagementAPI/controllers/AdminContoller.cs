@@ -119,7 +119,7 @@ public class AdminController : ControllerBase
                 PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList()
             });
-            
+
         }
 
         return Ok(userList);
@@ -327,7 +327,7 @@ public class AdminController : ControllerBase
         return Ok(teachers);
     }//end of get all techers controller
 
-     [HttpGet("all-parents")]
+    [HttpGet("all-parents")]
     public async Task<IActionResult> GetAllCustomParents()
     {
         var parents = await _context.Parents
@@ -344,7 +344,7 @@ public class AdminController : ControllerBase
 
         return Ok(parents);
     }//end of get all parents controller
-    
+
     [HttpPost("assign-parent")]
     public async Task<IActionResult> AssignParentToStudent([FromBody] AssignParentToStudentDto dto)
     {
@@ -360,10 +360,25 @@ public class AdminController : ControllerBase
         return Ok("Parent assigned to student successfully.");
     }//assign parent to student controller
 
+    [HttpGet("parent-student-assignments")]
+    public async Task<IActionResult> GetParentStudentAssignments()
+    {
+        var assignments = await _context.Students
+            .Where(s => s.ParentId != null)
+            .Include(s => s.ApplicationUser)
+            .Include(s => s.Parent)
+                .ThenInclude(p => p.ApplicationUser)
+            .Select(s => new ParentStudentAssignmentDto
+            {
+                StudentName = s.FullName,
+                StudentEmail = s.ApplicationUser.Email,
+                ParentName = s.Parent.FullName,
+                ParentEmail = s.Parent.ApplicationUser.Email
+            })
+            .ToListAsync();
 
-
-
-
+        return Ok(assignments);
+    }
 
 
 
