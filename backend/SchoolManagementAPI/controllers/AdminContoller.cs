@@ -328,7 +328,7 @@ public class AdminController : ControllerBase
     }//end of get all techers controller
 
      [HttpGet("all-parents")]
-    public async Task<IActionResult> GetAllCustomPaents()
+    public async Task<IActionResult> GetAllCustomParents()
     {
         var parents = await _context.Parents
             .Include(p => p.ApplicationUser)

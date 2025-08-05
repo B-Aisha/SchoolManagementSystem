@@ -66,10 +66,10 @@ const AssignParentToStudent = () => {
             style={{ width: '100%', padding: '8px' }}
           >
             <option value="">-- Select Student --</option>
-            {students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.userName} - {student.email}
-              </option>
+           {students.map((student) => (
+          <option key={student.studentId} value={student.studentId}>
+            {student.userName} - {student.email}
+          </option>
             ))}
           </select>
         </div>
@@ -84,9 +84,9 @@ const AssignParentToStudent = () => {
           >
             <option value="">-- Select Parent --</option>
             {parents.map((parent) => (
-              <option key={parent.id} value={parent.id}>
-                {parent.userName} - {parent.email}
-              </option>
+          <option key={parent.parentId} value={parent.parentId}>
+            {parent.userName} - {parent.email}
+          </option>
             ))}
           </select>
         </div>
