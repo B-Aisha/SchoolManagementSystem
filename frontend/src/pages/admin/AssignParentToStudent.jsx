@@ -1,5 +1,8 @@
+// src/pages/admin/AssignParentToStudent.jsx
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './admin.css'; // ✅ Ensure this path is correct
 
 const AssignParentToStudent = () => {
   const [students, setStudents] = useState([]);
@@ -7,6 +10,8 @@ const AssignParentToStudent = () => {
   const [selectedStudent, setSelectedStudent] = useState('');
   const [selectedParent, setSelectedParent] = useState('');
   const [message, setMessage] = useState('');
+  const [studentSearch, setStudentSearch] = useState('');
+  const [parentSearch, setParentSearch] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -52,55 +57,125 @@ const AssignParentToStudent = () => {
     }
   };
 
+  const filteredStudents = students.filter(
+    (s) =>
+      s.userName.toLowerCase().includes(studentSearch.toLowerCase()) ||
+      s.email.toLowerCase().includes(studentSearch.toLowerCase())
+  );
+
+  const filteredParents = parents.filter(
+    (p) =>
+      p.userName.toLowerCase().includes(parentSearch.toLowerCase()) ||
+      p.email.toLowerCase().includes(parentSearch.toLowerCase())
+  );
+
   return (
-    <div style={{ padding: '40px', maxWidth: '600px', margin: 'auto' }}>
-      <h2 style={{ textAlign: 'center' }}>Assign Parent to Student</h2>
+    <div style={{ padding: '40px' }}>
+      <h2 className="table-heading">Assign Parent to Student</h2>
 
       <form onSubmit={handleAssign}>
-        <div style={{ marginBottom: '20px' }}>
-          <label>Student:</label>
-          <select
-            value={selectedStudent}
-            onChange={(e) => setSelectedStudent(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          >
-            <option value="">-- Select Student --</option>
-           {students.map((student) => (
-          <option key={student.studentId} value={student.studentId}>
-            {student.userName} - {student.email}
-          </option>
-            ))}
-          </select>
-        </div>
+        <div className="table-container" style={{ gap: '40px', flexWrap: 'wrap', flexDirection: 'row' }}>
+          {/* Students Table */}
+          <div style={{ flex: '1', minWidth: '300px' }}>
+            <h3 style={{ marginBottom: '10px' }}>Students</h3>
+            <input
+              type="text"
+              placeholder="Search students..."
+              value={studentSearch}
+              onChange={(e) => setStudentSearch(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px',
+                marginBottom: '12px',
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+            />
+            <table className="custom-table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>UserName</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStudents.map((student) => (
+                  <tr key={student.studentId}>
+                    <td>
+                      <input
+                        type="radio"
+                        name="selectedStudent"
+                        value={student.studentId}
+                        checked={selectedStudent === student.studentId}
+                        onChange={() => setSelectedStudent(student.studentId)}
+                      />
+                    </td>
+                    <td>{student.userName}</td>
+                    <td>{student.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div style={{ marginBottom: '20px' }}>
-          <label>Parent:</label>
-          <select
-            value={selectedParent}
-            onChange={(e) => setSelectedParent(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          >
-            <option value="">-- Select Parent --</option>
-            {parents.map((parent) => (
-          <option key={parent.parentId} value={parent.parentId}>
-            {parent.userName} - {parent.email}
-          </option>
-            ))}
-          </select>
+          {/* Parents Table */}
+          <div style={{ flex: '1', minWidth: '300px' }}>
+            <h3 style={{ marginBottom: '10px' }}>Parents</h3>
+            <input
+              type="text"
+              placeholder="Search parents..."
+              value={parentSearch}
+              onChange={(e) => setParentSearch(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px',
+                marginBottom: '12px',
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+            />
+            <table className="custom-table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>UserName</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredParents.map((parent) => (
+                  <tr key={parent.parentId}>
+                    <td>
+                      <input
+                        type="radio"
+                        name="selectedParent"
+                        value={parent.parentId}
+                        checked={selectedParent === parent.parentId}
+                        onChange={() => setSelectedParent(parent.parentId)}
+                      />
+                    </td>
+                    <td>{parent.userName}</td>
+                    <td>{parent.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <button
           type="submit"
+          disabled={!selectedStudent || !selectedParent}
           style={{
             backgroundColor: '#007bff',
             color: 'white',
-            padding: '10px 16px',
+            padding: '12px 16px',
             border: 'none',
-            borderRadius: '4px',
+            borderRadius: '6px',
             cursor: 'pointer',
             width: '100%',
+            marginTop: '30px',
             fontWeight: 'bold'
           }}
         >
