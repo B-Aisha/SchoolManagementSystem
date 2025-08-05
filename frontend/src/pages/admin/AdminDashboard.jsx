@@ -36,6 +36,10 @@ const AdminDashboard = () => {
               <FaClipboardList size={40} />
               <h3>Course</h3>
             </Link>
+             <Link to="/admin/parent-student-list" className="admin-card">
+              <FaClipboardList size={40} />
+              <h3>Parent</h3>
+            </Link>
             
               
             
