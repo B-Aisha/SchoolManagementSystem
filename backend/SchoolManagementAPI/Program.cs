@@ -22,9 +22,22 @@ builder.Host.UseSerilog(); // Use Serilog instead of default logger
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    // Password policy (optional but recommended)
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // user locked out for 5 mins
+    options.Lockout.MaxFailedAccessAttempts = 3; // 3 failed attempts allowed
+    options.Lockout.AllowedForNewUsers = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
@@ -98,6 +111,22 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+// Security headers configuration
+app.UseXContentTypeOptions();
+app.UseReferrerPolicy(opt => opt.NoReferrer());
+app.UseXXssProtection(options => options.EnabledWithBlockMode());
+app.UseXfo(options => options.Deny());
+app.UseCsp(options => options
+    .BlockAllMixedContent()
+    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+    .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com"))
+    .ScriptSources(s => s.Self())
+    .FrameAncestors(s => s.None())
+    .ImageSources(s => s.Self())
+    .ObjectSources(s => s.None())
+);
+
 
 app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost");

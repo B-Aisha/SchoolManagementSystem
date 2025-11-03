@@ -84,12 +84,31 @@ namespace SchoolManagementAPI.controllers
                 return Unauthorized(new { error = "Email not found." });
             }
 
+
+            // Check if the account is locked
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                return Unauthorized(new { error = "Account locked due to multiple failed login attempts. Please try again later." });
+            }
+
+            // Check password
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                // Increment failed access count
+                await _userManager.AccessFailedAsync(user);
+
+                // Check if user should now be locked out
+                if (await _userManager.IsLockedOutAsync(user))
+                {
+                    return Unauthorized(new { error = "Account locked due to multiple failed login attempts. Please try again later." });
+                }
+
                 return Unauthorized(new { error = "Incorrect password." });
             }
 
-
+            // If login is successful, reset failed count
+            await _userManager.ResetAccessFailedCountAsync(user);
+               
 
             // CHECK if user has been assigned a role
             var roles = await _userManager.GetRolesAsync(user);

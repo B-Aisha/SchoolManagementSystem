@@ -58,3 +58,27 @@ WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
 2025-11-03 23:05:36.777 +03:00 [INF] Executed action SchoolManagementAPI.controllers.UsersController.Login (SchoolManagementAPI) in 308.049ms
 2025-11-03 23:05:36.787 +03:00 [INF] Executed endpoint 'SchoolManagementAPI.controllers.UsersController.Login (SchoolManagementAPI)'
 2025-11-03 23:05:36.819 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Users/login - 401 null application/json; charset=utf-8 489.6818ms
+2025-11-03 23:15:20.908 +03:00 [INF] Application is shutting down...
+2025-11-03 23:20:09.226 +03:00 [INF] Executed DbCommand (84ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-03 23:20:09.911 +03:00 [INF] Executed DbCommand (36ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-03 23:20:10.517 +03:00 [INF] Executed DbCommand (24ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-03 23:20:11.049 +03:00 [INF] Executed DbCommand (21ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2025-11-03 23:20:11.874 +03:00 [INF] User profile is available. Using 'C:\Users\25472\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-03 23:20:12.586 +03:00 [INF] Now listening on: http://localhost:5070
+2025-11-03 23:20:12.595 +03:00 [INF] Now listening on: https://localhost:7260
+2025-11-03 23:20:12.605 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-03 23:20:12.608 +03:00 [INF] Hosting environment: Development
+2025-11-03 23:20:12.616 +03:00 [INF] Content root path: C:\Users\25472\Desktop\SchoolManagementSystem\backend\SchoolManagementAPI
+2025-11-03 23:35:58.612 +03:00 [INF] Application is shutting down...
