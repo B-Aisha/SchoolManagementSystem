@@ -122,7 +122,7 @@ namespace SchoolManagementAPI.controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            //fetch studentid and teacherid in 
+            //fetch studentid and teacherid and parentid 
             string? studentId = null;
             string? teacherId = null;
             string? parentId = null;

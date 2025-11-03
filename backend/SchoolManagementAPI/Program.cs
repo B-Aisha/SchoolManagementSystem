@@ -6,9 +6,18 @@ using Microsoft.IdentityModel.Tokens;
 using SchoolManagementAPI.models;
 using SchoolManagementAPI.data;
 using System.Text;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Configure Serilog (Logs to console + file)
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog(); // Use Serilog instead of default logger
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -52,6 +61,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+//Global error handling middleware
+app.UseExceptionHandler("/error");
+
+app.Map("/error", (HttpContext context) =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+
+    if (exceptionHandlerPathFeature != null)
+    {
+        logger.LogError(exceptionHandlerPathFeature.Error, "Unhandled exception occurred at {Path}", exceptionHandlerPathFeature.Path);
+    }
+
+    return Results.Problem("An unexpected error occurred. Please contact support.");
+});
+
 
 using (var scope = app.Services.CreateScope())
 {

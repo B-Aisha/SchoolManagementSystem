@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom';
 const AssignParentToStudent = () => {
   const [students, setStudents] = useState([]);
   const [parents, setParents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState('equator');
   const [selectedParent, setSelectedParent] = useState('');
   const [message, setMessage] = useState('');
   const [studentSearch, setStudentSearch] = useState('');
   const [parentSearch, setParentSearch] = useState('');
   const navigate = useNavigate();
+  const [assignedStudentIds, setAssignedStudentIds] = useState([]);
+
 
 
   useEffect(() => {
@@ -22,17 +24,24 @@ const AssignParentToStudent = () => {
 
     const fetchUsers = async () => {
       try {
-        const [studentRes, parentRes] = await Promise.all([
+        const [studentRes, parentRes, assignmentRes] = await Promise.all([
           axios.get('https://localhost:7260/api/admin/all-students', {
             headers: { Authorization: `Bearer ${token}` }
           }),
           axios.get('https://localhost:7260/api/admin/all-parents', {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          axios.get('https://localhost:7260/api/admin/parent-student-assignments', {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
 
         setStudents(studentRes.data);
         setParents(parentRes.data);
+
+        const assignedIds = assignmentRes.data.map(a => a.studentId);
+        setAssignedStudentIds(assignedIds);
+
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -68,8 +77,10 @@ const AssignParentToStudent = () => {
 
   const filteredStudents = students.filter(
     (s) =>
+    (
       s.userName.toLowerCase().includes(studentSearch.toLowerCase()) ||
       s.email.toLowerCase().includes(studentSearch.toLowerCase())
+    )&& !assignedStudentIds.includes(s.studentId)
   );
 
   const filteredParents = parents.filter(
