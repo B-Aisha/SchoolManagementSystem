@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/" 
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "/client" # or "/" if package.json is in the root folder
+    schedule:
+      interval: "weekly"
+ 
